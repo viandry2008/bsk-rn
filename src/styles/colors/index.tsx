@@ -1,0 +1,37 @@
+const Colors = {
+    // lightPrimary: '#DBE4F6',
+    primary: '#E07764',
+    lightGreen: '#A9FFCC',
+    lightRed: '#FDCACA',
+    white: '#FFFFFF',
+    container: '#F2F2F2',
+    black: '#000000',
+    blackShading: 'rgba(0, 0, 0, 0.5)',
+    successContainer: '#ECFDF3',
+    success: '#12B76A',
+    successshading: 'rgba(18, 183, 106, 0.07)',
+    errorContainer: '#FEF1F1',
+    error: '#EF3A3A',
+    errorshading: 'rgba(239, 58, 58, 0.07)',
+
+    //punya ponpes
+    primary1: '#0093E9',
+    primary1shading: 'rgba(0, 147, 233, 0.07)',
+    primary2: '#00B8AE',
+    whiteShading: 'rgba(0, 0, 0, 0.05)',
+    gray1: '#333333',
+    gray2: '#4F4F4F',
+    gray3: '#828282',
+    gray4: '#BDBDBD',
+    gray5: '#C4C4C4',
+    placeholder: '#79747E',
+    // success: '#12B76A',
+    // successshading: 'rgba(18, 183, 106, 0.07)',
+    // error: '#EF3A3A',
+    // errorshading: 'rgba(239, 58, 58, 0.07)',
+    yellow: '#F2C94C',
+    yellowshading: 'rgba(242, 201, 76, 0.07)',
+    green2: '#27AE60',
+};
+
+export default Colors;
