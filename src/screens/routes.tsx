@@ -7,6 +7,7 @@ import SplashScreen from './splashScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Onboard from './onboarding';
+import Login from './auth/login';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -21,6 +22,13 @@ const MainNavigation = () => {
             <Stack.Screen
                 name="Onboard"
                 component={Onboard}
+                options={{
+                    headerShown: false,
+                }}
+            />
+            <Stack.Screen
+                name="Login"
+                component={Login}
                 options={{
                     headerShown: false,
                 }}
