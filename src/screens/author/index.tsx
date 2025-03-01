@@ -1,14 +1,64 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+import Colors from '../../styles/colors';
+import HeaderAuthorComp from '../../components/AuthorComp/HeaderAuthorComp';
+import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
 
 const AuthorPage = () => {
+  const authors = [
+    {
+      id: 1,
+      image: 'https://randomuser.me/api/portraits/men/10.jpg',
+      name: 'John',
+    },
+    {
+      id: 2,
+      image: 'https://randomuser.me/api/portraits/men/89.jpg',
+      name: 'Due',
+    },
+    {
+      id: 3,
+      image: 'https://randomuser.me/api/portraits/men/12.jpg',
+      name: 'Alicent',
+    },
+    {
+      id: 4,
+      image: 'https://randomuser.me/api/portraits/men/82.jpg',
+      name: 'Tigreal',
+    },
+    {
+      id: 5,
+      image: 'https://randomuser.me/api/portraits/men/77.jpg',
+      name: 'Baltakost',
+    },
+  ];
   return (
-    <View>
-      <Text>AuthorPage</Text>
+    <View style={styles.container}>
+      <HeaderAuthorComp onSearch={() => {}} />
+      <FlatList
+        data={authors}
+        renderItem={({item, index}) => (
+          <ListItemAuthorCt
+            item={item}
+            index={index}
+            onPress={() => {}}
+            type="column"
+          />
+        )}
+        keyExtractor={(item: any) => item.id}
+        numColumns={3}
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{paddingHorizontal: 8}}
+      />
     </View>
   );
 };
 
 export default AuthorPage;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: Colors.white,
+  },
+});

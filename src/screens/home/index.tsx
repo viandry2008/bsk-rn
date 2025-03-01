@@ -93,7 +93,12 @@ const HomePage = () => {
         <FlatList
           data={authors}
           renderItem={({item, index}) => (
-            <ListItemAuthorCt item={item} index={index} onPress={() => {}} />
+            <ListItemAuthorCt
+              item={item}
+              index={index}
+              onPress={() => {}}
+              type="row"
+            />
           )}
           keyExtractor={(item: any) => item.id}
           horizontal

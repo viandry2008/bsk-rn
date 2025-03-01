@@ -8,15 +8,34 @@ type Props = {
   item: any;
   onPress: Function;
   index: number;
+  type: 'row' | 'column';
 };
 
-const ListItemAuthorCt = ({item, onPress, index}: Props) => {
+const ListItemAuthorCt = ({item, onPress, index, type}: Props) => {
   return (
     <TouchableOpacity
       key={index}
       onPress={() => onPress}
-      style={styles.container}>
-      <Image source={{uri: item?.image}} style={styles.image} />
+      style={[
+        styles.container,
+        {
+          width:
+            type == 'row'
+              ? DimensionStyle.dimensionWidth * 0.2
+              : DimensionStyle.dimensionWidth * 0.28,
+        },
+      ]}>
+      <Image
+        source={{uri: item?.image}}
+        style={[
+          styles.image,
+          {
+            width: type == 'row' ? 70 : 100,
+            height: type == 'row' ? 70 : 100,
+            borderRadius: type == 'row' ? 70 : 100,
+          },
+        ]}
+      />
       <TextComp
         type="semibold"
         color={Colors.black}
@@ -33,7 +52,6 @@ export default ListItemAuthorCt;
 
 const styles = StyleSheet.create({
   container: {
-    width: DimensionStyle.dimensionWidth * 0.2,
     paddingVertical: 8,
     marginHorizontal: 8,
     marginVertical: 4,
@@ -41,9 +59,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
-    width: 70,
-    height: 70,
-    borderRadius: 70,
     marginBottom: 2,
   },
 });
