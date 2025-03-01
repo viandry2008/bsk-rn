@@ -37,14 +37,10 @@ const MainNavigation = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen
-        name="Onboard"
-        component={Onboard}
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Stack.Screen name="Register" component={Register} />
       {/* main home */}
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+
       <Stack.Screen
         name="MainHome"
         component={MainTabNavigation}
@@ -53,9 +49,6 @@ const MainNavigation = () => {
         }}
       />
 
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Register" component={Register} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="Privacy" component={Privacy} />
     </Stack.Navigator>
   );
