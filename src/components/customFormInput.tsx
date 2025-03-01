@@ -2,8 +2,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import Colors from '../styles/colors';
 import { Input } from '@rneui/themed';
-// import Colors from '../../styles/colors';
-// // import Font from '../../styles/fonts';
 
 interface Props {
     focusRef?: any,
@@ -29,7 +27,6 @@ interface Props {
     borderBottom?: any,
     defVal?: any,
 }
-
 
 const CustomFormInput = ({
     focusRef,
@@ -57,17 +54,6 @@ const CustomFormInput = ({
 }: Props) => {
     return (
         <View>
-            {/* <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        {icon}
-        {titleCustom ? (
-          titleCustom
-        ) : (
-          <>
-          <Text style={[Font.titleForm]}>{title}</Text>
-          </>
-        )}
-      </View>
-      <View style={{height:8}} /> */}
             <Input
                 ref={focusRef}
                 value={val}
@@ -82,8 +68,6 @@ const CustomFormInput = ({
                 onPressIn={press}
                 editable={editable}
                 placeholder={placholder}
-                // style={styled ? styled : [Font.medium16]}
-                // style={{marginBottom: 0, paddingBottom: 0}}
                 inputContainerStyle={
                     borderBottom
                         ? {
@@ -92,9 +76,7 @@ const CustomFormInput = ({
                             borderBottomWidth: 1,
                             borderRadius: 8,
                             paddingHorizontal: 8,
-                            // bottom: 0,
-                            // backgroundColor: 'red',
-                            // marginBottom: -16,
+                            backgroundColor: 'white',
                         }
                         : {
                             borderColor: Colors.container,
@@ -102,9 +84,7 @@ const CustomFormInput = ({
                             borderWidth: 1,
                             borderRadius: 8,
                             paddingHorizontal: 8,
-                            // bottom: 0,
-                            // backgroundColor: 'red',
-                            // marginBottom: -16,
+                            backgroundColor: 'white',
                         }
                 }
                 errorMessage={errorMsg ? errorMsg : false}

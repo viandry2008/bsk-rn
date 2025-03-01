@@ -1,17 +1,18 @@
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Image } from 'react-native'
-import React, { useState } from 'react'
-import BtnCustom from '../../components/btnCustom'
-import CustomFormInput from '../../components/customFormInput'
-import Spacing from '../../components/spacing'
-import Colors from '../../styles/colors'
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import BtnCustom from '../../components/btnCustom';
+import CustomFormInput from '../../components/customFormInput';
+import Spacing from '../../components/spacing';
+import Colors from '../../styles/colors';
+// import { RadioButton } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Login = ({ navigation }: any) => {
     const [form, setForm] = useState({
-        role: '',
-        username: '',
+        email: '',
         password: '',
     });
-    const [loading, setLoading] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     const onInputChange = (value: string, input: string) => {
         setForm({
@@ -22,89 +23,80 @@ const Login = ({ navigation }: any) => {
 
     return (
         <SafeAreaView style={styles.wrap}>
-            {/* <Loading spinner={loading} /> */}
-            <StatusBar
-                backgroundColor="transparent"
-                barStyle={'dark-content'}
-                translucent
-            />
-            {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-            <View
-                style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-                {/* <Image
-                    source={require('../../../assets/Images/title2.png')}
-                    style={{ width: '50%', height: 70, resizeMode: 'contain' }}
-                />
-                <Spacing /> */}
-                <View
-                    style={{
-                        backgroundColor: Colors.white,
-                        borderRadius: 16,
-                        padding: 16,
-                        width: '80%',
-                    }}>
-                    <Text style={[{ textAlign: 'center' }]}>
-                        Welcome Back!
-                    </Text>
-                    <View style={{ height: 16 }} />
-                    <CustomFormInput
-                        title='Username'
-                    // placeholder="Input Username"
-                    // backgroundColor={Colors.white}
-                    // borderColor={Colors.container}
-                    // leftIcon={
-                    //     <Image
-                    //         source={require('../../../assets/Icons/user.png')}
-                    //         style={styles.size24}
-                    //     />
-                    // }
-                    // value={form.username}
-                    // onChangeText={value => onInputChange(value, 'username')}
-                    />
-                    <Spacing />
-                    <CustomFormInput
-                        title='Password'
-                    // placeholder="Input Password"
-                    // backgroundColor={Colors.white}
-                    // borderColor={Colors.container}
-                    // leftIcon={
-                    //     <Image
-                    //         source={require('../../../assets/Icons/lock.png')}
-                    //         style={styles.size24}
-                    //     />
-                    // }
-                    // value={form.password}
-                    // onChangeText={value => onInputChange(value, 'password')}
-                    // secureTextEntry
-                    />
-                    <Spacing />
-                    <BtnCustom
-                        title={'Login'}
-                        onPress={() => {
-                            // onSubmit();
-                            // navigation.navigate('login')
-                        }}
-                    />
+            <StatusBar backgroundColor="transparent" barStyle={'dark-content'} translucent />
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <View style={{flex:1}}>
+                {/* <TouchableOpacity style={styles.skipButton} onPress={() => navigation.navigate('Home')}>
+                    <Text style={styles.skipText}>Skip</Text>
+                </TouchableOpacity> */}
+                <View style={styles.skipButton}>
+                    <BtnCustom title={'Skip'} onPress={() => {}} />
                 </View>
-            </View>
-            {/* </ScrollView> */}
+                <Text style={styles.title}>Welcome Back!</Text>
+                <Text style={styles.subtitle}>Login in to continue</Text>
+                
+                <View style={{flex:1,marginTop:50}}>
+                <CustomFormInput placholder={'Email*'} val={form.email} change={(text : string) => onInputChange(text, 'email')} />
+                <CustomFormInput placholder={'Password'} val={form.password} change={(text: string) => onInputChange(text, 'password')} scureText />
+                </View>
+
+                <View style={styles.rememberForgotRow}>
+                    <View style={styles.rememberMeContainer}>
+                        {/* <RadioButton
+                            status={rememberMe ? 'checked' : 'unchecked'}
+                            onPress={() => setRememberMe(!rememberMe)}
+                        /> */}
+                        <Text>Remember me</Text>
+                    </View>
+                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
+                        <Text style={styles.forgotText}>Forgot Password?</Text>
+                    </TouchableOpacity>
+                </View>
+                
+                <BtnCustom title={'LOG IN'} onPress={() => {}} />
+                
+                <View style={styles.policyContainer}>
+                    {/* <RadioButton status={'checked'} /> */}
+                    <Text>By Signing in you accept </Text>
+                    <TouchableOpacity>
+                        <Text style={styles.policyText}>Privacy Policy</Text>
+                    </TouchableOpacity>
+                </View>
+                
+                <Text style={styles.orText}>Or continue with</Text>
+                
+                <TouchableOpacity style={styles.googleButton}>
+                    {/* <Icon name="google" size={20} color={'white'} /> */}
+                    <Text style={styles.googleText}>Login with Google</Text>
+                </TouchableOpacity>
+                
+                <View style={styles.signupContainer}>
+                    <Text>Don't have an account? </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        <Text style={styles.signupText}>Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
 
-export default Login
-
 const styles = StyleSheet.create({
-    wrap: { flex: 1, backgroundColor: Colors.primary },
-    size24: { width: 24, height: 24 },
-    modalBtnList: {
-        marginTop: 8,
-        paddingVertical: 8,
-        width: '100%',
-        alignItems: 'center',
-    },
+    wrap: { flex: 1, backgroundColor: Colors.lightPrimary, padding: 16 },
+    skipButton: { alignSelf: 'flex-end' },
+    title: { fontSize: 24, fontWeight: 'bold', marginTop: 16 },
+    subtitle: { fontSize: 16, color: 'gray', marginBottom: 16 },
+    rememberForgotRow: { flexDirection: 'row', justifyContent: 'space-between', width: '100%', marginVertical: 16 },
+    rememberMeContainer: { flexDirection: 'row', alignItems: 'center' },
+    forgotText: { color: Colors.gray3, fontWeight: 'bold' },
+    policyContainer: { flexDirection: 'row', alignItems: 'center', marginVertical: 16 ,alignSelf:'center'},
+    policyText: { color: Colors.gray3, fontWeight: 'bold' },
+    orText: { marginVertical: 16, color: 'gray',textAlign:'center',marginTop:30 },
+    googleButton: { flexDirection: 'row', alignItems: 'center', backgroundColor: 'red', padding: 10, borderRadius: 5 , marginVertical: 16 },
+    googleText: { color: 'white', marginLeft: 10 },
+    signupContainer: { flexDirection: 'row', marginTop: 16 ,alignSelf:'center'},
+    signupText: { color: Colors.gray3, fontWeight: 'bold' },
 });
+
+export default Login;
