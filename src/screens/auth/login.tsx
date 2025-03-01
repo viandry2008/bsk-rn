@@ -55,7 +55,7 @@ const Login = ({ navigation }: any) => {
                 <View style={styles.policyContainer}>
                     {/* <RadioButton status={'checked'} /> */}
                     <Text>By Signing in you accept </Text>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
                         <Text style={styles.policyText}>Privacy Policy</Text>
                     </TouchableOpacity>
                 </View>
