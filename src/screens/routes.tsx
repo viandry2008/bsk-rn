@@ -9,6 +9,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Onboard from './onboarding';
 import Login from './auth/login';
 import MainTabNavigation from './MainTabNavigation';
+import Register from './auth/register';
+import ForgotPassword from './auth/ForgotPassword';
+import Privacy from './auth/Privacy';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -34,6 +37,13 @@ const MainNavigation = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="Onboard"
+        component={Onboard}
+        options={{
+          headerShown: false,
+        }}
+      />
       {/* main home */}
       <Stack.Screen
         name="MainHome"
@@ -42,6 +52,11 @@ const MainNavigation = () => {
           headerShown: false,
         }}
       />
+
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Register" component={Register} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="Privacy" component={Privacy} />
     </Stack.Navigator>
   );
 };
