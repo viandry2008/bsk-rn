@@ -8,6 +8,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Onboard from './onboarding';
 import Login from './auth/login';
+import Register from './auth/register';
+import ForgotPassword from './auth/forogotPassword';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -29,9 +31,14 @@ const MainNavigation = () => {
             <Stack.Screen
                 name="Login"
                 component={Login}
-                options={{
-                    headerShown: false,
-                }}
+            />
+             <Stack.Screen
+                name="Register"
+                component={Register}
+            />
+             <Stack.Screen
+                name="ForgotPassword"
+                component={ForgotPassword}
             />
         </Stack.Navigator>)
 }

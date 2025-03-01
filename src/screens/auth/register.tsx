@@ -7,7 +7,7 @@ import Colors from '../../styles/colors';
 // import { RadioButton } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const Login = ({ navigation }: any) => {
+const Register = ({ navigation }: any) => {
     const [form, setForm] = useState({
         email: '',
         password: '',
@@ -26,31 +26,19 @@ const Login = ({ navigation }: any) => {
             <StatusBar backgroundColor="transparent" barStyle={'dark-content'} translucent />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{flex:1}}>
-                <View style={styles.skipButton}>
-                    <BtnCustom title={'Skip'} onPress={() => {}} paddingVertical={8} />
-                </View>
-                <Text style={styles.title}>Welcome Back!</Text>
-                <Text style={styles.subtitle}>Login in to continue</Text>
+                <Text style={styles.title}>Sign Up</Text>
+                <Text style={styles.subtitle}>Let`s Sign Up</Text>
                 
                 <View style={{flex:1,marginTop:50}}>
+                <CustomFormInput placholder={'Name*'} val={form.email} change={(text : string) => onInputChange(text, 'email')} />
                 <CustomFormInput placholder={'Email*'} val={form.email} change={(text : string) => onInputChange(text, 'email')} />
                 <CustomFormInput placholder={'Password'} val={form.password} change={(text: string) => onInputChange(text, 'password')} scureText />
-                </View>
-
-                <View style={styles.rememberForgotRow}>
-                    <View style={styles.rememberMeContainer}>
-                        {/* <RadioButton
-                            status={rememberMe ? 'checked' : 'unchecked'}
-                            onPress={() => setRememberMe(!rememberMe)}
-                        /> */}
-                        <Text>Remember me</Text>
-                    </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
-                        <Text style={styles.forgotText}>Forgot Password?</Text>
-                    </TouchableOpacity>
+                <CustomFormInput placholder={'Phone'} val={form.email} change={(text : string) => onInputChange(text, 'email')} />
                 </View>
                 
-                <BtnCustom title={'LOG IN'} onPress={() => {}}  />
+                <View style={{marginVertical:16}}>
+                    <BtnCustom title={'LOG IN'} onPress={() => {}}  />
+                </View>
                 
                 <View style={styles.policyContainer}>
                     {/* <RadioButton status={'checked'} /> */}
@@ -60,17 +48,10 @@ const Login = ({ navigation }: any) => {
                     </TouchableOpacity>
                 </View>
                 
-                <Text style={styles.orText}>Or continue with</Text>
-                
-                <TouchableOpacity style={styles.googleButton}>
-                    {/* <Icon name="google" size={20} color={'white'} /> */}
-                    <Text style={styles.googleText}>Login with Google</Text>
-                </TouchableOpacity>
-                
                 <View style={styles.signupContainer}>
-                    <Text>Don't have an account? </Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-                        <Text style={styles.signupText}>Sign Up</Text>
+                    <Text>Already have an account? </Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        <Text style={styles.signupText}>Login</Text>
                     </TouchableOpacity>
                 </View>
                 </View>
@@ -96,4 +77,4 @@ const styles = StyleSheet.create({
     signupText: { color: Colors.gray3, fontWeight: 'bold' },
 });
 
-export default Login;
+export default Register;
