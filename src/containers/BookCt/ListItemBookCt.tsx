@@ -9,12 +9,37 @@ import Colors from '../../styles/colors';
 type Props = {
   item: any;
   index: number;
+  type: 'row' | 'column';
 };
 
-const ListItemBookCt = ({item, index}: Props) => {
+const ListItemBookCt = ({item, index, type}: Props) => {
   return (
-    <TouchableOpacity key={index} onPress={() => {}} style={styles.container}>
-      <Image source={{uri: item?.image}} style={styles.image} />
+    <TouchableOpacity
+      key={index}
+      onPress={() => {}}
+      style={[
+        styles.container,
+        {
+          width:
+            type == 'row'
+              ? DimensionStyle.dimensionWidth * 0.35
+              : DimensionStyle.dimensionWidth * 0.45,
+          marginVertical: type == 'row' ? 4 : 8,
+        },
+      ]}>
+      <Image
+        source={{uri: item?.image}}
+        style={[
+          styles.image,
+          {
+            width:
+              type == 'row'
+                ? DimensionStyle.dimensionWidth * 0.35
+                : DimensionStyle.dimensionWidth * 0.45,
+            height: type == 'row' ? 210 : 260,
+          },
+        ]}
+      />
       <View style={styles.content}>
         <TextComp
           type="semibold"
@@ -33,7 +58,7 @@ const ListItemBookCt = ({item, index}: Props) => {
           <View style={styles.rowrating}>
             <Icon
               name="star"
-              size={8}
+              size={12}
               color={Colors.yellow}
               iconStyle="solid"
             />
@@ -71,16 +96,12 @@ export default ListItemBookCt;
 
 const styles = StyleSheet.create({
   container: {
-    width: DimensionStyle.dimensionWidth * 0.35,
     backgroundColor: Colors.white,
     borderRadius: 16,
     marginHorizontal: 8,
-    marginVertical: 4,
     elevation: 1,
   },
   image: {
-    width: DimensionStyle.dimensionWidth * 0.35,
-    height: 210,
     borderRadius: 16,
   },
   content: {

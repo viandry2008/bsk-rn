@@ -82,7 +82,7 @@ const HomePage = () => {
         <FlatList
           data={books}
           renderItem={({item, index}) => (
-            <ListItemBookCt item={item} index={index} />
+            <ListItemBookCt item={item} index={index} type="row" />
           )}
           keyExtractor={(item: any) => item.id}
           horizontal
@@ -104,7 +104,7 @@ const HomePage = () => {
         <FlatList
           data={books}
           renderItem={({item, index}) => (
-            <ListItemBookCt item={item} index={index} />
+            <ListItemBookCt item={item} index={index} type="row" />
           )}
           keyExtractor={(item: any) => item.id}
           horizontal
