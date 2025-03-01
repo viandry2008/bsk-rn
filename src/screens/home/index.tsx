@@ -8,7 +8,11 @@ import TitleSectionHome from '../../components/HomeComp/TitleSectionHome';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
 
-const HomePage = () => {
+type Props = {
+  navigation: {navigate: Function};
+};
+
+const HomePage = ({navigation}: Props) => {
   const books = [
     {
       id: 1,
@@ -82,7 +86,12 @@ const HomePage = () => {
         <FlatList
           data={books}
           renderItem={({item, index}) => (
-            <ListItemBookCt item={item} index={index} type="row" />
+            <ListItemBookCt
+              item={item}
+              index={index}
+              type="row"
+              onPress={() => navigation.navigate('BookDetail')}
+            />
           )}
           keyExtractor={(item: any) => item.id}
           horizontal
@@ -109,7 +118,12 @@ const HomePage = () => {
         <FlatList
           data={books}
           renderItem={({item, index}) => (
-            <ListItemBookCt item={item} index={index} type="row" />
+            <ListItemBookCt
+              item={item}
+              index={index}
+              type="row"
+              onPress={() => navigation.navigate('BookDetail')}
+            />
           )}
           keyExtractor={(item: any) => item.id}
           horizontal

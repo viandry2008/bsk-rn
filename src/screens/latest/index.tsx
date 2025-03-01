@@ -4,7 +4,11 @@ import HeaderLatesComp from '../../components/LatestComp/HeaderLatesComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import Colors from '../../styles/colors';
 
-const LatestPage = () => {
+type Props = {
+  navigation: {navigate: Function};
+};
+
+const LatestPage = ({navigation}: Props) => {
   const books = [
     {
       id: 1,
@@ -41,7 +45,12 @@ const LatestPage = () => {
       <FlatList
         data={books}
         renderItem={({item, index}) => (
-          <ListItemBookCt item={item} index={index} type="column" />
+          <ListItemBookCt
+            item={item}
+            index={index}
+            type="column"
+            onPress={() => navigation.navigate('BookDetail')}
+          />
         )}
         keyExtractor={(item: any) => item.id}
         numColumns={2}

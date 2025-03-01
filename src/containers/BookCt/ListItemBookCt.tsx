@@ -10,13 +10,14 @@ type Props = {
   item: any;
   index: number;
   type: 'row' | 'column';
+  onPress: Function;
 };
 
-const ListItemBookCt = ({item, index, type}: Props) => {
+const ListItemBookCt = ({item, index, type, onPress}: Props) => {
   return (
     <TouchableOpacity
       key={index}
-      onPress={() => {}}
+      onPress={() => onPress()}
       style={[
         styles.container,
         {

@@ -12,6 +12,7 @@ import MainTabNavigation from './MainTabNavigation';
 import Register from './auth/register';
 import ForgotPassword from './auth/ForgotPassword';
 import Privacy from './auth/Privacy';
+import BookDetailPage from './book/BookDetailPage';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -44,6 +45,15 @@ const MainNavigation = () => {
       <Stack.Screen
         name="MainHome"
         component={MainTabNavigation}
+        options={{
+          headerShown: false,
+        }}
+      />
+
+      {/* book */}
+      <Stack.Screen
+        name="BookDetail"
+        component={BookDetailPage}
         options={{
           headerShown: false,
         }}
