@@ -72,7 +72,7 @@ const Login = ({navigation}: any) => {
             </TouchableOpacity>
           </View>
 
-          <BtnCustom title={'LOG IN'} onPress={() => {}} />
+          <BtnCustom title={'LOG IN'} onPress={() => navigation.navigate('MainHome')} />
 
           <View style={styles.policyContainer}>
             {/* <RadioButton status={'checked'} /> */}

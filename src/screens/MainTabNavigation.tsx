@@ -6,6 +6,7 @@ import AuthorPage from './author';
 import CategoryPage from './category';
 import HomePage from './home';
 import LatestPage from './latest';
+import ProfilePage from './profile';
 
 // const tab
 const Tab = createBottomTabNavigator();
@@ -85,7 +86,7 @@ const MainTabNavigation = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={AuthorPage}
+        component={ProfilePage}
         options={{
           headerShown: false,
         }}

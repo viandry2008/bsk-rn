@@ -23,7 +23,7 @@ const MainNavigation = () => {
   return (
     <Stack.Navigator
       // initialRouteName={props.token !== null ? 'BerandaAgen' : 'Onboard'}
-      initialRouteName={'MainHome'}>
+      initialRouteName={'Onboard'}>
       <Stack.Screen
         name="Onboard"
         component={Onboard}
