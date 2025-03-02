@@ -13,6 +13,7 @@ import Register from './auth/register';
 import ForgotPassword from './auth/ForgotPassword';
 import Privacy from './auth/Privacy';
 import BookDetailPage from './book/BookDetailPage';
+import AuthorDetailPage from './author/AuthorDetailPage';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -54,6 +55,14 @@ const MainNavigation = () => {
       <Stack.Screen
         name="BookDetail"
         component={BookDetailPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      {/* author */}
+      <Stack.Screen
+        name="AuthorDetail"
+        component={AuthorDetailPage}
         options={{
           headerShown: false,
         }}

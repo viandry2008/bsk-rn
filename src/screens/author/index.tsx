@@ -1,10 +1,14 @@
-import {FlatList, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import Colors from '../../styles/colors';
+import {FlatList, StyleSheet, View} from 'react-native';
 import HeaderAuthorComp from '../../components/AuthorComp/HeaderAuthorComp';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
+import Colors from '../../styles/colors';
 
-const AuthorPage = () => {
+type Props = {
+  navigation: {navigate: Function};
+};
+
+const AuthorPage = ({navigation}: Props) => {
   const authors = [
     {
       id: 1,
@@ -41,7 +45,7 @@ const AuthorPage = () => {
           <ListItemAuthorCt
             item={item}
             index={index}
-            onPress={() => {}}
+            onPress={() => navigation.navigate('AuthorDetail')}
             type="column"
           />
         )}
