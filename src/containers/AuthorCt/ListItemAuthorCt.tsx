@@ -15,7 +15,7 @@ const ListItemAuthorCt = ({item, onPress, index, type}: Props) => {
   return (
     <TouchableOpacity
       key={index}
-      onPress={() => onPress}
+      onPress={() => onPress()}
       style={[
         styles.container,
         {
