@@ -15,6 +15,7 @@ import Privacy from './auth/Privacy';
 import BookDetailPage from './book/BookDetailPage';
 import AuthorDetailPage from './author/AuthorDetailPage';
 import MyFav from './profile/MyFav';
+import EditProfile from './profile/EditProfile';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -71,6 +72,13 @@ const MainNavigation = () => {
       <Stack.Screen
         name="MyFav"
         component={MyFav}
+        // options={{
+        //   headerShown: false,
+        // }}
+      />
+      <Stack.Screen
+        name="EditProfile"
+        component={EditProfile}
         // options={{
         //   headerShown: false,
         // }}

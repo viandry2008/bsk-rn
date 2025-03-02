@@ -77,7 +77,7 @@ const ProfilePage = ({ navigation }: Props) => {
       {/* Modalize */}
       <Modalize ref={modalizeRef} modalHeight={250}>
         <FlatList
-          data={[{ id: 1, title: 'Edit Profile',onPress:()=>{} }, { id: 2, title: 'My Favourite',onPress:()=>{navigation.navigate('MyFav')} }, { id: 3, title: 'Logout',onPress:()=>{} }]}
+          data={[{ id: 1, title: 'Edit Profile',onPress:()=>{navigation.navigate('EditProfile')} }, { id: 2, title: 'My Favourite',onPress:()=>{navigation.navigate('MyFav')} }, { id: 3, title: 'Logout',onPress:()=>{navigation.navigate('Login')} }]}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }:any) => (
             <TouchableOpacity style={styles.modalItem} onPress={item.onPress}>
