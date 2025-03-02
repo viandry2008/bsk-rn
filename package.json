@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@react-native-vector-icons/common": "^11.0.0",
+    "@react-native-vector-icons/evil-icons": "^1.10.1",
     "@react-native-vector-icons/fontawesome6": "^6.7.1",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/elements": "^2.2.5",
@@ -21,7 +22,9 @@
     "@rneui/themed": "^0.0.0-edge.2",
     "react": "18.3.1",
     "react-native": "0.77.0",
+    "react-native-gesture-handler": "^2.24.0",
     "react-native-masked-text": "^1.13.0",
+    "react-native-modalize": "^2.1.1",
     "react-native-ratings": "^8.1.0",
     "react-native-render-html": "^6.3.4",
     "react-native-responsive-fontsize": "^0.5.1",
