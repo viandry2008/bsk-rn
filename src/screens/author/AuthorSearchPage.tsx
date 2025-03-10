@@ -1,35 +1,40 @@
-import React, {useEffect} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
-import HeaderAuthorComp from '../../components/AuthorComp/HeaderAuthorComp';
+import HeaderAuthorSearchComp from '../../components/AuthorComp/HeaderAuthorSearchComp';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
-import {ApplicationState, getAuthorsAction} from '../../store';
+import {ApplicationState, getAuthorsSearchAction} from '../../store';
 import Colors from '../../styles/colors';
+import {messageHelper} from '../../utils/helpers';
 
 type Props = {
-  navigation: {navigate: Function};
+  navigation: {navigate: Function; goBack: Function};
   authors: any;
 };
 
-const AuthorPage = ({
+const AuthorSearchPage = ({
   navigation,
   authors = useSelector(
-    (state: ApplicationState) => state.authorReducer.authors,
+    (state: ApplicationState) => state.authorReducer.authorsSearch,
   ),
 }: Props) => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetching = async () => {
-      dispatch(getAuthorsAction(1) as any);
-    };
-
-    fetching();
-  }, []);
+  const [search, setSearch] = useState('');
 
   return (
     <View style={styles.container}>
-      <HeaderAuthorComp onSearch={() => navigation.navigate('AuthorSearch')} />
+      <HeaderAuthorSearchComp
+        onBack={() => navigation.goBack()}
+        onSearch={(v: string) => setSearch(v)}
+        search={search}
+        onSubmitEditing={() =>
+          search == ''
+            ? messageHelper('Harap masukan pencarian', 'danger')
+            : dispatch(getAuthorsSearchAction(search, 1) as any)
+        }
+      />
       <FlatList
         data={authors}
         renderItem={({item, index}) => (
@@ -49,7 +54,7 @@ const AuthorPage = ({
   );
 };
 
-export default AuthorPage;
+export default AuthorSearchPage;
 
 const styles = StyleSheet.create({
   container: {

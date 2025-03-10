@@ -19,23 +19,42 @@ const ListItemAuthorCt = ({item, onPress, index, type}: Props) => {
       style={[
         styles.container,
         {
+          marginVertical: type == 'row' ? 4 : 8,
           width:
             type == 'row'
               ? DimensionStyle.dimensionWidth * 0.2
               : DimensionStyle.dimensionWidth * 0.28,
         },
       ]}>
-      <Image
-        source={{uri: item?.image}}
-        style={[
-          styles.image,
-          {
-            width: type == 'row' ? 70 : 100,
-            height: type == 'row' ? 70 : 100,
-            borderRadius: type == 'row' ? 70 : 100,
-          },
-        ]}
-      />
+      {item?.thumbnail == null ? (
+        <Image
+          source={{
+            uri: 'https://fakeimg.pl/120x120?text=not+found',
+          }}
+          style={[
+            styles.image,
+            {
+              width: type == 'row' ? 70 : 120,
+              height: type == 'row' ? 70 : 120,
+              borderRadius: type == 'row' ? 70 : 120,
+            },
+          ]}
+        />
+      ) : (
+        <Image
+          source={{
+            uri: item?.thumbnail,
+          }}
+          style={[
+            styles.image,
+            {
+              width: type == 'row' ? 70 : 120,
+              height: type == 'row' ? 70 : 120,
+              borderRadius: type == 'row' ? 70 : 120,
+            },
+          ]}
+        />
+      )}
       <TextComp
         type="semibold"
         color={Colors.black}
@@ -54,11 +73,10 @@ const styles = StyleSheet.create({
   container: {
     paddingVertical: 8,
     marginHorizontal: 8,
-    marginVertical: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
   image: {
-    marginBottom: 2,
+    marginBottom: 4,
   },
 });

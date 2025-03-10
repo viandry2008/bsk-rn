@@ -48,7 +48,7 @@ export const getAuthorsAction = (page: any) => {
 
       dispatch({
         type: 'GetAuthors',
-        payload: res.data,
+        payload: res.data.data,
       });
     } catch (err: any) {
       console.log('err GetAuthors', err.response.data);
@@ -62,7 +62,7 @@ export const getAuthorsAction = (page: any) => {
   };
 };
 
-export const getAuthorsSearchAction = (search: any) => {
+export const getAuthorsSearchAction = (search: any, page: any) => {
   return async (dispatch: Dispatch<AuthorAction>) => {
     dispatch({
       type: 'GetAuthorsSearch',
@@ -70,14 +70,14 @@ export const getAuthorsSearchAction = (search: any) => {
     });
     try {
       const res = await axios.get(
-        getAuthorsSearch({search: search}),
+        getAuthorsSearch({search: search, page: page}),
         headerAxiosHelper(),
       );
       console.log('res GetAuthorsSearch', res.data);
 
       dispatch({
         type: 'GetAuthorsSearch',
-        payload: res.data,
+        payload: res.data.data,
       });
     } catch (err: any) {
       console.log('err GetAuthorsSearch', err.response.data);
