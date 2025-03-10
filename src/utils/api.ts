@@ -12,3 +12,12 @@ export const getSubCategories = ({id}: any) =>
 // favorites
 export const getFavorites = API_URL + `api/v2/favorites`;
 export const postFavorite = API_URL + `api/v2/favorites`;
+
+// authors
+export const getAuthors = ({page}: any) =>
+  API_URL + `api/v2/authors?page=${page}`;
+export const getAuthorsSearch = ({search}: any) =>
+  API_URL + `api/v2/authors?query=${search}`;
+export const getAuthorDetail = ({id}: any) => API_URL + `api/v2/authors/${id}`;
+export const getAuthorBooks = ({id, page}: any) =>
+  API_URL + `api/v2/authors/${id}/books?page=${page}`;
