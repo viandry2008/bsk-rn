@@ -2,7 +2,6 @@ import {API_URL} from '@env';
 
 // authetication
 export const postLogin = API_URL + `api/v2/auth/login`;
-export const getMe = API_URL + `api/v2/profil/getbytoken`;
 
 // category
 export const getCategories = API_URL + `api/v2/categories`;
@@ -21,3 +20,6 @@ export const getAuthorsSearch = ({search}: any) =>
 export const getAuthorDetail = ({id}: any) => API_URL + `api/v2/authors/${id}`;
 export const getAuthorBooks = ({id, page}: any) =>
   API_URL + `api/v2/authors/${id}/books?page=${page}`;
+
+// profile
+export const getMe = API_URL + `api/v2/profil/getbytoken`;
