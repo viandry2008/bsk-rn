@@ -8,3 +8,7 @@ export const getMe = API_URL + `api/v2/profil/getbytoken`;
 export const getCategories = API_URL + `api/v2/categories`;
 export const getSubCategories = ({id}: any) =>
   API_URL + `api/v2/categories/${id}`;
+
+// favorites
+export const getFavorites = API_URL + `api/v2/favorites`;
+export const postFavorite = API_URL + `api/v2/favorites`;
