@@ -16,14 +16,14 @@ const ListItemCategoryCt = ({item, onPress, index}: Props) => {
       key={index}
       onPress={() => onPress()}
       style={styles.container}>
-      <Image source={{uri: item?.image}} style={styles.image} />
+      <Image source={{uri: item?.thumbnail}} style={styles.image} />
       <View style={styles.bg} />
-      <View style={{position: 'absolute', bottom: 8, left: 16}}>
+      <View style={{position: 'absolute', bottom: 8, left: 8, right: 8}}>
         <TextComp
           type="semibold"
           color={Colors.white}
           size={14}
-          value={item?.title}
+          value={item?.text}
           numberOfLines={1}
         />
       </View>
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     width: DimensionStyle.dimensionWidth * 0.45,
     height: 130,
     borderRadius: 16,
+    resizeMode: 'contain',
   },
   bg: {
     width: DimensionStyle.dimensionWidth * 0.45,
