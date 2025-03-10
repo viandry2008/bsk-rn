@@ -1,57 +1,83 @@
-import React, { useRef } from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  FlatList
-} from 'react-native';
-import Colors from '../../styles/colors';
 import Icon from '@react-native-vector-icons/fontawesome6';
+import React, {useRef} from 'react';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Modalize} from 'react-native-modalize';
+import {useDispatch, useSelector} from 'react-redux';
+import LoadingComp from '../../components/LoadingComp';
 import TextComp from '../../components/TextComp';
 import ListItemBookCover from '../../containers/BookCover/ListItemBookCover';
-import { Modalize } from 'react-native-modalize';
+import {ApplicationState, postLogoutAppAction} from '../../store';
+import Colors from '../../styles/colors';
 
 type Props = {
+  loading: boolean;
   navigation: {navigate: Function};
 };
 
-const ProfilePage = ({ navigation }: Props) => {
+const ProfilePage = ({
+  navigation,
+  loading = useSelector((state: ApplicationState) => state.authReducer.loading),
+}: Props) => {
+  const dispatch = useDispatch();
   const modalizeRef = useRef<Modalize>(null);
 
   const books = [
     {
       id: 1,
-      image: 'https://assets1.bmstatic.com/assets/books-covers/98/be/tUOBGULx-ipad.jpg?height=352',
+      image:
+        'https://assets1.bmstatic.com/assets/books-covers/98/be/tUOBGULx-ipad.jpg?height=352',
       title: 'I am Malala',
     },
     {
       id: 2,
-      image: 'https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352',
+      image:
+        'https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352',
       title: 'Kreativitas Tanpa Batas',
     },
     {
       id: 3,
-      image: 'https://assets1.bmstatic.com/assets/books-covers/c4/80/sJPnaHJP-ipad.jpg?height=352',
+      image:
+        'https://assets1.bmstatic.com/assets/books-covers/c4/80/sJPnaHJP-ipad.jpg?height=352',
       title: 'Catatan Indah untuk Tuhan',
-    }
+    },
   ];
 
   return (
     <View style={styles.containerMain}>
+      <LoadingComp loading={loading} />
       {/* Header */}
       <View style={styles.container}>
-        <TextComp type="semibold" color={Colors.white} size={18} value="Profile" />
-        <TouchableOpacity onPress={() => modalizeRef.current?.open()} style={styles.button}>
-          <Icon name="ellipsis-vertical" size={18} color={Colors.white} iconStyle="solid" />
+        <TextComp
+          type="semibold"
+          color={Colors.white}
+          size={18}
+          value="Profile"
+        />
+        <TouchableOpacity
+          onPress={() => modalizeRef.current?.open()}
+          style={styles.button}>
+          <Icon
+            name="ellipsis-vertical"
+            size={18}
+            color={Colors.white}
+            iconStyle="solid"
+          />
         </TouchableOpacity>
       </View>
 
       {/* Profile Section */}
       <View style={styles.profileSection}>
-        <Image source={require('../../assets/images/sigma.jpg')} style={styles.profileImage} />
+        <Image
+          source={require('../../assets/images/sigma.jpg')}
+          style={styles.profileImage}
+        />
         <View>
           <Text style={styles.profileName}>John Doe</Text>
           <Text style={styles.profileEmail}>johndoe@example.com</Text>
@@ -68,8 +94,10 @@ const ProfilePage = ({ navigation }: Props) => {
         <FlatList
           data={books}
           numColumns={3}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item, index }) => <ListItemBookCover item={item} index={index} onPress={() => {}} />}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item, index}) => (
+            <ListItemBookCover item={item} index={index} onPress={() => {}} />
+          )}
           contentContainerStyle={styles.listContainer}
         />
       </View>
@@ -77,12 +105,37 @@ const ProfilePage = ({ navigation }: Props) => {
       {/* Modalize */}
       <Modalize ref={modalizeRef} modalHeight={250}>
         <FlatList
-          data={[{ id: 1, title: 'Edit Profile',onPress:()=>{navigation.navigate('EditProfile')} }, { id: 2, title: 'My Favourite',onPress:()=>{navigation.navigate('MyFav')} }, { id: 3, title: 'Logout',onPress:()=>{navigation.navigate('Login')} }]}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }:any) => (
+          data={[
+            {
+              id: 1,
+              title: 'Edit Profile',
+              onPress: () => {
+                navigation.navigate('EditProfile');
+              },
+            },
+            {
+              id: 2,
+              title: 'My Favourite',
+              onPress: () => {
+                navigation.navigate('MyFav');
+              },
+            },
+            {
+              id: 3,
+              title: 'Logout',
+              onPress: () => dispatch(postLogoutAppAction(navigation) as any),
+            },
+          ]}
+          keyExtractor={item => item.id.toString()}
+          renderItem={({item}: any) => (
             <TouchableOpacity style={styles.modalItem} onPress={item.onPress}>
               <Text style={styles.modalText}>{item.title}</Text>
-              <Icon name="chevron-right" size={16} color={Colors.primary} iconStyle="solid" />
+              <Icon
+                name="chevron-right"
+                size={16}
+                color={Colors.primary}
+                iconStyle="solid"
+              />
             </TouchableOpacity>
           )}
         />

@@ -16,17 +16,17 @@ import BookDetailPage from './book/BookDetailPage';
 import AuthorDetailPage from './author/AuthorDetailPage';
 import MyFav from './profile/MyFav';
 import EditProfile from './profile/EditProfile';
+import {getDataLoginHelper} from '../utils/helpers';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
 const Stack = createNativeStackNavigator();
 // const Tab = createMaterialBottomTabNavigator();
 
-const MainNavigation = () => {
+const MainNavigation = (props: any) => {
   return (
     <Stack.Navigator
-      // initialRouteName={props.token !== null ? 'BerandaAgen' : 'Onboard'}
-      initialRouteName={'Onboard'}>
+      initialRouteName={props.token !== null ? 'MainHome' : 'Onboard'}>
       <Stack.Screen
         name="Onboard"
         component={Onboard}
@@ -92,21 +92,19 @@ const MainNavigation = () => {
 // Komponen Utama (Routes)
 const Routes = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [token, setToken] = useState(null);
-  const [typeAkun, setTypeAkun] = useState(null);
+  const [token, setToken] = useState<any>(null);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(!isLoading);
     }, 3000);
 
-    //   async function getToken() {
-    //     const token = await AsyncStorage.getItem('api_token');
-    //     const typeAkun = await AsyncStorage.getItem('type_akun');
-    //     setToken(token);
-    //     setTypeAkun(typeAkun);
-    //   }
-    //   getToken();
+    const fetching = async () => {
+      let user = await getDataLoginHelper();
+      setToken(user?.token);
+    };
+
+    fetching();
   }, []);
 
   if (isLoading) {
@@ -115,7 +113,7 @@ const Routes = () => {
 
   return (
     <NavigationContainer>
-      <MainNavigation />
+      <MainNavigation token={token} />
     </NavigationContainer>
   );
 };

@@ -6,13 +6,18 @@ import {
   messageHelper,
   saveDataLoginHelper,
 } from '../../utils/helpers';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface PostLogin {
   type: 'PostLogin';
   loading: boolean;
 }
+interface PostLogout {
+  type: 'PostLogout';
+  loading: boolean;
+}
 
-export type AuthAction = PostLogin;
+export type AuthAction = PostLogin | PostLogout;
 
 export const postLoginAction = (data: any, navigation: any) => {
   return async (dispatch: Dispatch<AuthAction>) => {
@@ -46,3 +51,29 @@ export const postLoginAction = (data: any, navigation: any) => {
     }
   };
 };
+
+export const postLogoutAppAction =
+  (navigation: any) => async (dispatch: Dispatch<AuthAction>) => {
+    dispatch({
+      type: 'PostLogout',
+      loading: true,
+    });
+    try {
+      await AsyncStorage.clear();
+      dispatch({
+        type: 'PostLogout',
+        loading: false,
+      });
+      // reset navigation
+      navigation.reset({
+        index: 0,
+        routes: [{name: 'Login'}],
+      });
+    } catch (e) {
+      dispatch({
+        type: 'PostLogout',
+        loading: false,
+      });
+      console.log(e);
+    }
+  };

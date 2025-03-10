@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import ButtonSearch from '../../components/HomeComp/ButtonSearch';
 import HeaderHome from '../../components/HomeComp/HeaderHome';
@@ -7,12 +7,16 @@ import Colors from '../../styles/colors';
 import TitleSectionHome from '../../components/HomeComp/TitleSectionHome';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
+import {useDispatch} from 'react-redux';
+import {getDataLoginHelper} from '../../utils/helpers';
 
 type Props = {
   navigation: {navigate: Function};
 };
 
 const HomePage = ({navigation}: Props) => {
+  const dispatch = useDispatch();
+
   const books = [
     {
       id: 1,
@@ -70,6 +74,14 @@ const HomePage = ({navigation}: Props) => {
       name: 'Baltakost',
     },
   ];
+
+  useEffect(() => {
+    const fetching = async () => {
+      let user = await getDataLoginHelper();
+    };
+
+    fetching();
+  }, []);
 
   return (
     <View style={styles.container}>

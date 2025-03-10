@@ -18,8 +18,8 @@ import {ApplicationState, postLoginAction} from '../../store';
 import {messageHelper} from '../../utils/helpers';
 
 type Props = {
-  loading: boolean;
-  navigation: {navigate: Function};
+  loading?: boolean;
+  navigation?: {navigate: Function};
 };
 
 const Login = ({
@@ -93,7 +93,7 @@ const Login = ({
               <Text>Remember me</Text>
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ForgotPassword')}>
+              onPress={() => navigation?.navigate('ForgotPassword')}>
               <Text style={styles.forgotText}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
@@ -103,7 +103,7 @@ const Login = ({
           <View style={styles.policyContainer}>
             {/* <RadioButton status={'checked'} /> */}
             <Text>By Signing in you accept </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Privacy')}>
+            <TouchableOpacity onPress={() => navigation?.navigate('Privacy')}>
               <Text style={styles.policyText}>Privacy Policy</Text>
             </TouchableOpacity>
           </View>
@@ -117,7 +117,7 @@ const Login = ({
 
           <View style={styles.signupContainer}>
             <Text>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <TouchableOpacity onPress={() => navigation?.navigate('Register')}>
               <Text style={styles.signupText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
