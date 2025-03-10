@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import HaederCategoryComp from '../../components/CategoryComp/HeaderCategoryComp';
@@ -16,6 +16,7 @@ const CategoryPage = ({
   ),
 }: Props) => {
   const dispatch = useDispatch();
+  const [statusSearch, setStatusSearch] = useState(false);
 
   useEffect(() => {
     const fetching = async () => {
@@ -27,7 +28,11 @@ const CategoryPage = ({
 
   return (
     <View style={styles.container}>
-      <HaederCategoryComp onSearch={() => {}} />
+      <HaederCategoryComp
+        onSearch={() => setStatusSearch(true)}
+        statusSearch={statusSearch}
+        onLeft={() => setStatusSearch(false)}
+      />
       <FlatList
         data={categories}
         renderItem={({item, index}) => (

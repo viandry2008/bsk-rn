@@ -1,5 +1,5 @@
 import React from 'react';
-import {LogBox} from 'react-native';
+import {LogBox, StatusBar} from 'react-native';
 import FlashMessage from 'react-native-flash-message';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Provider} from 'react-redux';
@@ -13,6 +13,7 @@ LogBox.ignoreAllLogs();
 const App = () => {
   return (
     <Provider store={store}>
+      <StatusBar translucent backgroundColor={'transparent'} />
       <GestureHandlerRootView style={{flex: 1}}>
         <Routes />
         <FlashMessage position="bottom" />
