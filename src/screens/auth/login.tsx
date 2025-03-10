@@ -1,21 +1,33 @@
+import React, {useState} from 'react';
 import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
-  View,
-  SafeAreaView,
-  StatusBar,
-  ScrollView,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import React, {useState} from 'react';
 import BtnCustom from '../../components/btnCustom';
 import CustomFormInput from '../../components/customFormInput';
-import Spacing from '../../components/spacing';
 import Colors from '../../styles/colors';
 // import { RadioButton } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {useDispatch, useSelector} from 'react-redux';
+import LoadingComp from '../../components/LoadingComp';
+import {ApplicationState, postLoginAction} from '../../store';
+import {messageHelper} from '../../utils/helpers';
 
-const Login = ({navigation}: any) => {
+type Props = {
+  loading: boolean;
+  navigation: {navigate: Function};
+};
+
+const Login = ({
+  loading = useSelector((state: ApplicationState) => state.authReducer.loading),
+  navigation,
+}: Props) => {
+  const dispacth = useDispatch();
+
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -29,8 +41,22 @@ const Login = ({navigation}: any) => {
     });
   };
 
+  const handleLogin = () => {
+    if (form.email == '' || form.password == '') {
+      messageHelper('Emal dan Password tidak boleh kosong!', 'danger');
+    } else {
+      let body = {
+        email: form.email,
+        password: form.password,
+      };
+
+      dispacth(postLoginAction(body, navigation) as any);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.wrap}>
+      <LoadingComp loading={loading} />
       <StatusBar
         backgroundColor="transparent"
         barStyle={'dark-content'}
@@ -72,7 +98,7 @@ const Login = ({navigation}: any) => {
             </TouchableOpacity>
           </View>
 
-          <BtnCustom title={'LOG IN'} onPress={() => navigation.navigate('MainHome')} />
+          <BtnCustom title={'LOG IN'} onPress={() => handleLogin()} />
 
           <View style={styles.policyContainer}>
             {/* <RadioButton status={'checked'} /> */}
