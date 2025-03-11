@@ -4,6 +4,7 @@ import {CategoryReducer} from './categoryReducer';
 import {FavoriteReducer} from './favoriteReducer';
 import {AuthorReducer} from './authorReducer';
 import {ProfileReducer} from './profileReducer';
+import {BookReducer} from './bookReducer';
 
 const rootReducer = combineReducers({
   authReducer: AuthReducer,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   favoriteReducer: FavoriteReducer,
   authorReducer: AuthorReducer,
   profileReducer: ProfileReducer,
+  bookReducer: BookReducer,
 });
 
 export type ApplicationState = ReturnType<typeof rootReducer>;

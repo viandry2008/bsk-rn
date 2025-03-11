@@ -28,32 +28,39 @@ const ListItemBookCt = ({item, index, type, onPress}: Props) => {
           marginVertical: type == 'row' ? 4 : 8,
         },
       ]}>
-      <Image
-        source={{uri: item?.image}}
-        style={[
-          styles.image,
-          {
-            width:
-              type == 'row'
-                ? DimensionStyle.dimensionWidth * 0.35
-                : DimensionStyle.dimensionWidth * 0.45,
-            height: type == 'row' ? 210 : 260,
-          },
-        ]}
-      />
+      {item?.resources?.map((item: any) => {
+        if (item?.rel == 'cover') {
+          return (
+            <Image
+              source={{uri: item?.href}}
+              style={[
+                styles.image,
+                {
+                  width:
+                    type == 'row'
+                      ? DimensionStyle.dimensionWidth * 0.35
+                      : DimensionStyle.dimensionWidth * 0.45,
+                  height: type == 'row' ? 210 : 260,
+                },
+              ]}
+            />
+          );
+        }
+      })}
       <View style={styles.content}>
         <TextComp
           type="semibold"
           color={Colors.gray1}
           size={14}
-          value={item?.title}
+          value={item?.metadata?.title}
+          numberOfLines={3}
         />
         <Spacing size={4} />
         <TextComp
           type="regular"
           color={Colors.placeholder}
           size={12}
-          value={'by ' + item?.author}
+          value={'Oleh ' + item?.metadata?.author}
         />
         <View style={styles.row}>
           <View style={styles.rowrating}>
@@ -67,7 +74,7 @@ const ListItemBookCt = ({item, index, type, onPress}: Props) => {
             <TextComp
               type="regular"
               size={11}
-              value={item?.rating}
+              value={item?.metadata?.rating}
               color={Colors.placeholder}
             />
           </View>
@@ -75,16 +82,14 @@ const ListItemBookCt = ({item, index, type, onPress}: Props) => {
             style={[
               styles.cardprice,
               {
-                backgroundColor:
-                  item?.price == 0 ? Colors.placeholder : Colors.primary,
+                backgroundColor: Colors.primary,
               },
             ]}>
             <TextComp
-              isPrice={item?.price == 0 ? false : true}
               color={Colors.white}
               size={11}
               type={'medium'}
-              value={item?.price == 0 ? 'Free' : item?.price}
+              value={item?.metadata?.['tahun terbit']}
             />
           </View>
         </View>

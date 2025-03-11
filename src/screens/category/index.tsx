@@ -3,17 +3,23 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import HaederCategoryComp from '../../components/CategoryComp/HeaderCategoryComp';
 import ListItemCategoryCt from '../../containers/CategoryCt/ListItemCategoryCt';
-import {ApplicationState, getCategoriesAction} from '../../store';
+import {
+  ApplicationState,
+  getBooksByCategoryAction,
+  getCategoriesAction,
+} from '../../store';
 import Colors from '../../styles/colors';
 
 type Props = {
   categories: any;
+  navigation: {navigate: Function};
 };
 
 const CategoryPage = ({
   categories = useSelector(
     (state: ApplicationState) => state.categoryReducer.categories,
   ),
+  navigation,
 }: Props) => {
   const dispatch = useDispatch();
   const [statusSearch, setStatusSearch] = useState(false);
@@ -36,7 +42,13 @@ const CategoryPage = ({
       <FlatList
         data={categories}
         renderItem={({item, index}) => (
-          <ListItemCategoryCt item={item} index={index} onPress={() => {}} />
+          <ListItemCategoryCt
+            item={item}
+            index={index}
+            onPress={(params: any) =>
+              dispatch(getBooksByCategoryAction(params, 1, navigation) as any)
+            }
+          />
         )}
         keyExtractor={(item: any) => item.id}
         numColumns={2}

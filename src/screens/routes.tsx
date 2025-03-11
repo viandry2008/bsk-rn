@@ -18,6 +18,7 @@ import MyFav from './profile/MyFav';
 import EditProfile from './profile/EditProfile';
 import {getDataLoginHelper} from '../utils/helpers';
 import AuthorSearchPage from './author/AuthorSearchPage';
+import BookCategoryPage from './book/BookCategoryPage';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -62,6 +63,14 @@ const MainNavigation = (props: any) => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="BookCategory"
+        component={BookCategoryPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+
       {/* author */}
       <Stack.Screen
         name="AuthorDetail"

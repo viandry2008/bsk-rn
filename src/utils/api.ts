@@ -21,5 +21,12 @@ export const getAuthorDetail = ({id}: any) => API_URL + `api/v2/authors/${id}`;
 export const getAuthorBooks = ({id, page}: any) =>
   API_URL + `api/v2/authors/${id}/books?page=${page}`;
 
+// books
+export const getBooksByCategory = ({category, page}: any) =>
+  API_URL + `api/v2/ebooks?page=${page}&category=${category}`;
+export const getBooks = ({page, category, search}: any) =>
+  API_URL + `api/v2/ebooks?page=${page}&category=${category}&query=${search}`;
+export const getBookDetail = ({id}: any) => API_URL + `api/v2/ebook/${id}`;
+
 // profile
 export const getMe = API_URL + `api/v2/profil/getbytoken`;

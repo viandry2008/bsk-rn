@@ -19,7 +19,7 @@ const HaederCategoryComp = ({onSearch, statusSearch, onLeft}: Props) => {
         type="semibold"
         color={Colors.black}
         size={18}
-        value="Categories"
+        value="Kategori"
       />
       {/* {statusSearch == false ? (
         <View style={{flex: 1}}>

@@ -14,7 +14,7 @@ const ListItemCategoryCt = ({item, onPress, index}: Props) => {
   return (
     <TouchableOpacity
       key={index}
-      onPress={() => onPress()}
+      onPress={() => onPress(item)}
       style={styles.container}>
       <Image source={{uri: item?.thumbnail}} style={styles.image} />
       <View style={styles.bg} />

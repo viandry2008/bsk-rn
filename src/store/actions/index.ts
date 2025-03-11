@@ -3,3 +3,4 @@ export * from './categoryAction';
 export * from './favoriteAction';
 export * from './authorAction';
 export * from './profileAction';
+export * from './bookAction';

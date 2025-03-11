@@ -1,9 +1,9 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import Colors from '../styles/colors';
 import Icon from '@react-native-vector-icons/fontawesome6';
-import Spacing from './spacing';
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import Colors from '../styles/colors';
 import TextComp from './TextComp';
+import Spacing from './spacing';
 
 type Props = {
   onBack?: any;
@@ -53,11 +53,12 @@ export default HeaderCustom;
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 70,
+    height: 100,
     backgroundColor: Colors.white,
     elevation: 1,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 16,
+    paddingTop: 32,
   },
 });
