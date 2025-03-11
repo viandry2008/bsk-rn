@@ -1,9 +1,9 @@
 import React from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import HeaderCustom from '../../components/HeaderCustom';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
-import {ApplicationState} from '../../store';
+import {ApplicationState, getBookDetailAction} from '../../store';
 import Colors from '../../styles/colors';
 
 type Props = {
@@ -19,6 +19,7 @@ const BookCategoryPage = ({
     (state: ApplicationState) => state.bookReducer.booksCategory,
   ),
 }: Props) => {
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
       <HeaderCustom
@@ -32,7 +33,9 @@ const BookCategoryPage = ({
             item={item}
             index={index}
             type="column"
-            onPress={() => navigation.navigate('BookDetail')}
+            onPress={(params: any) =>
+              dispatch(getBookDetailAction(params?.id, navigation) as any)
+            }
           />
         )}
         keyExtractor={(item: any) => item.id}

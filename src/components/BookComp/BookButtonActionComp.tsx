@@ -1,23 +1,17 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React from 'react';
-import Colors from '../../styles/colors';
-import DimensionStyle from '../../styles/DimensionStyle';
 import Icon from '@react-native-vector-icons/fontawesome6';
+import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import DimensionStyle from '../../styles/DimensionStyle';
+import Colors from '../../styles/colors';
 import TextComp from '../TextComp';
 
 type Props = {
   onFavorite: Function;
-  onDownload: Function;
   onRead: Function;
   onReport: Function;
 };
 
-const BookButtonActionComp = ({
-  onFavorite,
-  onDownload,
-  onRead,
-  onReport,
-}: Props) => {
+const BookButtonActionComp = ({onFavorite, onRead, onReport}: Props) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.card}>
@@ -27,21 +21,6 @@ const BookButtonActionComp = ({
           color={Colors.gray2}
           size={11}
           value="Favorit"
-        />
-      </TouchableOpacity>
-      <View style={styles.line} />
-      <TouchableOpacity style={styles.card}>
-        <Icon
-          name="download"
-          size={24}
-          color={Colors.black}
-          iconStyle="solid"
-        />
-        <TextComp
-          type="regular"
-          color={Colors.gray2}
-          size={11}
-          value="Download"
         />
       </TouchableOpacity>
       <View style={styles.line} />

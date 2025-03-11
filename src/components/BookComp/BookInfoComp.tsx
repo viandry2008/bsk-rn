@@ -18,7 +18,13 @@ const BookInfoComp = ({desc}: Props) => {
         value="Deskripsi"
       />
       <Spacing size={4} />
-      <TextComp type="regular" color={Colors.gray1} size={11} value={desc} />
+      <TextComp
+        type="regular"
+        color={Colors.gray1}
+        size={11}
+        value={desc}
+        isRender={true}
+      />
     </View>
   );
 };

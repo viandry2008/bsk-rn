@@ -1,85 +1,50 @@
 import React from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import BookBannerComp from '../../components/BookComp/BookBannerComp';
 import BookButtonActionComp from '../../components/BookComp/BookButtonActionComp';
-import HeaderCustom from '../../components/HeaderCustom';
-import Colors from '../../styles/colors';
 import BookInfoComp from '../../components/BookComp/BookInfoComp';
 import BookReviewComp from '../../components/BookComp/BookReviewComp';
+import HeaderCustom from '../../components/HeaderCustom';
 import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
+import {ApplicationState} from '../../store';
+import Colors from '../../styles/colors';
 
 type Props = {
   navigation: {goBack: Function; push: Function};
+  book: any;
+  booksCategory: any;
 };
 
-const BookDetailPage = ({navigation}: Props) => {
-  const books = [
-    {
-      id: 1,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/98/be/tUOBGULx-ipad.jpg?height=352',
-      title: 'i am Malala',
-      author: 'Malala Yousafzai',
-      rating: 4,
-      price: 0,
-    },
-    {
-      id: 2,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352',
-      title: 'Kreativitas Tanpa Batas',
-      author: 'Tim Kick Andy',
-      rating: 5,
-      price: 10000,
-    },
-    {
-      id: 3,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/c4/80/sJPnaHJP-ipad.jpg?height=352',
-      title: 'Catatan Indah untuk Tuhan',
-      author: 'Saptuari Sugiharto',
-      rating: 4,
-      price: 11000,
-    },
-  ];
-
+const BookDetailPage = ({
+  navigation,
+  book = useSelector((state: ApplicationState) => state.bookReducer.bookDetail),
+  booksCategory = useSelector(
+    (state: ApplicationState) => state.bookReducer.booksCategory,
+  ),
+}: Props) => {
   return (
     <View style={styles.container}>
-      <HeaderCustom
-        onBack={() => navigation.goBack()}
-        title="Detail"
-        iconRight="plane"
-        onRight={() => {}}
-      />
+      <HeaderCustom onBack={() => navigation.goBack()} title="Detail" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <BookBannerComp
-          image="https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352"
-          title="Lorem ip sum dolor"
-          author="John Doe"
-          price={0}
-          view="13k"
+          image={book?.resources}
+          title={book?.metadata?.title}
+          author={book?.metadata?.author}
+          year={book?.metadata?.year}
+          view={book?.metadata?.viewed}
         />
         <BookButtonActionComp
           onFavorite={() => {}}
-          onDownload={() => {}}
           onRead={() => {}}
           onReport={() => {}}
         />
-        <BookInfoComp
-          desc="Donec nec quam eu nisi efficitur volutpat vulputate iaculis 
-        mauris. Ut eget sapien faucibus tortor fermentum mollis sit amet eget nulla. 
-        Pellentesque sollicitudin faucibus mauris nec laoreet. Quisque viverra rutrum 
-        orci ac vestibulum. Duis venenatis ornare dolor. Pellentesque mauris diam, 
-        lacinia vel orci sed, rhoncus vestibulum urna. Sed scelerisque metus ex, in 
-        eleifend ante lobortis vel. Pellentesque ut consequat dui, at accumsan leo. 
-        Etiam facilisis vel arcu at tristique. Donec enim ex, tincidunt non posuere vel, 
-        iaculis vel mi. Phasellus in sollicitudin nisl. Nunc sed nisi nunc."
-        />
+        <BookInfoComp desc={book?.metadata?.description} />
         <BookReviewComp
           onAll={() => {}}
-          rating={4}
-          review={337}
+          rating={book?.metadata?.rating}
+          review={0}
           onReview={() => {}}
         />
         <View style={{marginVertical: 8, paddingHorizontal: 16}}>
@@ -91,7 +56,7 @@ const BookDetailPage = ({navigation}: Props) => {
           />
         </View>
         <FlatList
-          data={books}
+          data={booksCategory}
           renderItem={({item, index}) => (
             <ListItemBookCt
               item={item}

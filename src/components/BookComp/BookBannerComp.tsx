@@ -1,23 +1,27 @@
-import {Image, StyleSheet, Text, View} from 'react-native';
+import Icon from '@react-native-vector-icons/fontawesome6';
 import React from 'react';
+import {Image, StyleSheet, View} from 'react-native';
 import DimensionStyle from '../../styles/DimensionStyle';
 import Colors from '../../styles/colors';
 import TextComp from '../TextComp';
 import Spacing from '../spacing';
-import Icon from '@react-native-vector-icons/fontawesome6';
 
 type Props = {
-  image: string;
+  image: any;
   title: string;
   author: string;
-  price: number;
+  year: string;
   view: string;
 };
 
-const BookBannerComp = ({image, title, author, price, view}: Props) => {
+const BookBannerComp = ({image, title, author, year, view}: Props) => {
   return (
     <View style={styles.container}>
-      <Image source={{uri: image}} style={styles.image} />
+      {image?.map((item: any) => {
+        if (item?.rel == 'cover') {
+          return <Image source={{uri: item?.href}} style={styles.image} />;
+        }
+      })}
       <View style={styles.column}>
         <View>
           <TextComp
@@ -27,28 +31,28 @@ const BookBannerComp = ({image, title, author, price, view}: Props) => {
             value={title}
           />
           <Spacing size={4} />
-          <TextComp
-            type="regular"
-            color={Colors.placeholder}
-            size={14}
-            value={'By ' + author}
-          />
+          {author == null ? null : (
+            <TextComp
+              type="regular"
+              color={Colors.placeholder}
+              size={14}
+              value={'Oleh ' + author}
+            />
+          )}
         </View>
         <View style={[styles.rowcolumn, {justifyContent: 'space-between'}]}>
           <View
             style={[
               styles.cardprice,
               {
-                backgroundColor:
-                  price == 0 ? Colors.placeholder : Colors.primary,
+                backgroundColor: Colors.primary,
               },
             ]}>
             <TextComp
-              isPrice={price == 0 ? false : true}
               color={Colors.white}
               size={11}
               type={'medium'}
-              value={price == 0 ? 'Free' : price.toString()}
+              value={year}
             />
           </View>
           <View style={styles.rowcolumn}>
