@@ -19,6 +19,7 @@ import EditProfile from './profile/EditProfile';
 import {getDataLoginHelper} from '../utils/helpers';
 import AuthorSearchPage from './author/AuthorSearchPage';
 import BookCategoryPage from './book/BookCategoryPage';
+import BookSearchPage from './book/BookSearchPage';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -66,6 +67,13 @@ const MainNavigation = (props: any) => {
       <Stack.Screen
         name="BookCategory"
         component={BookCategoryPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BookSearch"
+        component={BookSearchPage}
         options={{
           headerShown: false,
         }}
