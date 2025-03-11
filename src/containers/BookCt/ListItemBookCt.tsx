@@ -56,12 +56,14 @@ const ListItemBookCt = ({item, index, type, onPress}: Props) => {
           numberOfLines={3}
         />
         <Spacing size={4} />
-        <TextComp
-          type="regular"
-          color={Colors.placeholder}
-          size={12}
-          value={'Oleh ' + item?.metadata?.author}
-        />
+        {item?.metadata?.author == null ? null : (
+          <TextComp
+            type="regular"
+            color={Colors.placeholder}
+            size={12}
+            value={'Oleh ' + item?.metadata?.author}
+          />
+        )}
         <View style={styles.row}>
           <View style={styles.rowrating}>
             <Icon

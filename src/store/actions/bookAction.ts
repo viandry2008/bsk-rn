@@ -26,7 +26,10 @@ export const getBooksByCategoryAction = (
     });
     try {
       const res = await axios.get(
-        getBooksByCategory({category: category?.slug, page: page}),
+        getBooksByCategory({
+          category: category == '' ? '' : category?.slug,
+          page: page,
+        }),
         headerAxiosHelper(),
       );
       console.log('res GetBooksByCategory', res.data);
@@ -36,7 +39,7 @@ export const getBooksByCategoryAction = (
         payload: res.data.data,
       });
 
-      navigation.navigate('BookCategory', category);
+      navigation == null ? null : navigation.navigate('BookCategory', category);
     } catch (err: any) {
       console.log('err GetBooksByCategory', err.response.data);
       messageHelper(err.response.data.message, 'danger');

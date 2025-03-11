@@ -30,7 +30,7 @@ const HeaderLatesComp = ({onSearch, onMenu}: Props) => {
         />
       </TouchableOpacity>
       <Spacing horizontal size={8} />
-      <TouchableOpacity onPress={() => onMenu} style={styles.button}>
+      <TouchableOpacity onPress={() => onMenu()} style={styles.button}>
         <Icon name="bars" size={18} color={Colors.gray1} iconStyle="solid" />
       </TouchableOpacity>
     </View>

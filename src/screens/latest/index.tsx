@@ -1,47 +1,55 @@
-import React from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import Icon from '@react-native-vector-icons/fontawesome6';
+import React, {useEffect, useRef, useState} from 'react';
+import {FlatList, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Modalize} from 'react-native-modalize';
+import {useDispatch, useSelector} from 'react-redux';
 import HeaderLatesComp from '../../components/LatestComp/HeaderLatesComp';
+import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
+import {
+  ApplicationState,
+  getBookDetailAction,
+  getBooksByCategoryAction,
+  getCategoriesAction,
+} from '../../store';
 import Colors from '../../styles/colors';
 
 type Props = {
   navigation: {navigate: Function};
+  books: any;
+  categories: any;
 };
 
-const LatestPage = ({navigation}: Props) => {
-  const books = [
-    {
-      id: 1,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/98/be/tUOBGULx-ipad.jpg?height=352',
-      title: 'i am Malala',
-      author: 'Malala Yousafzai',
-      rating: 4,
-      price: 0,
-    },
-    {
-      id: 2,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352',
-      title: 'Kreativitas Tanpa Batas',
-      author: 'Tim Kick Andy',
-      rating: 5,
-      price: 10000,
-    },
-    {
-      id: 3,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/c4/80/sJPnaHJP-ipad.jpg?height=352',
-      title: 'Catatan Indah untuk Tuhan',
-      author: 'Saptuari Sugiharto',
-      rating: 4,
-      price: 11000,
-    },
-  ];
+const LatestPage = ({
+  navigation,
+  books = useSelector(
+    (state: ApplicationState) => state.bookReducer.booksCategory,
+  ),
+  categories = useSelector(
+    (state: ApplicationState) => state.categoryReducer.categories,
+  ),
+}: Props) => {
+  const dispatch = useDispatch();
+
+  const modalizeRef = useRef<Modalize>(null);
+
+  const [category, setCategory] = useState<any>({});
+
+  useEffect(() => {
+    const fetching = async () => {
+      dispatch(getCategoriesAction() as any);
+      dispatch(getBooksByCategoryAction('', 1, null) as any);
+    };
+
+    fetching();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <HeaderLatesComp onSearch={() => {}} onMenu={() => {}} />
+      <HeaderLatesComp
+        onSearch={() => {}}
+        onMenu={() => modalizeRef.current?.open()}
+      />
       <FlatList
         data={books}
         renderItem={({item, index}) => (
@@ -49,7 +57,9 @@ const LatestPage = ({navigation}: Props) => {
             item={item}
             index={index}
             type="column"
-            onPress={() => navigation.navigate('BookDetail')}
+            onPress={(params: any) =>
+              dispatch(getBookDetailAction(params?.id, navigation) as any)
+            }
           />
         )}
         keyExtractor={(item: any) => item.id}
@@ -57,6 +67,41 @@ const LatestPage = ({navigation}: Props) => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 3}}
       />
+
+      <Modalize ref={modalizeRef} modalHeight={400}>
+        <FlatList
+          data={categories}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              onPress={() => {
+                modalizeRef.current?.close();
+                setCategory(item);
+                dispatch(getBooksByCategoryAction(item, 1, null) as any);
+              }}
+              style={styles.listCat}>
+              <View style={{flex: 1}}>
+                <TextComp
+                  type="semibold"
+                  color={Colors.black}
+                  size={12}
+                  value={item?.text}
+                />
+              </View>
+              {category?.id == item?.id ? (
+                <Icon
+                  name="check"
+                  size={18}
+                  color={Colors.black}
+                  iconStyle="solid"
+                />
+              ) : null}
+            </TouchableOpacity>
+          )}
+          keyExtractor={(item: any) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingHorizontal: 16, paddingVertical: 16}}
+        />
+      </Modalize>
     </View>
   );
 };
@@ -67,5 +112,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Colors.white,
+  },
+  listCat: {
+    width: '100%',
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderColor: Colors.container,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
