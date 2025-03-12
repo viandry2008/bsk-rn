@@ -1,44 +1,58 @@
-import React from 'react';
-import {
-    FlatList,
-    StyleSheet,
-    View
-} from 'react-native';
+import React, {useEffect} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
 import ListItemBookCover from '../../containers/BookCover/ListItemBookCover';
 import Colors from '../../styles/colors';
+import {getDataLoginHelper} from '../../utils/helpers';
+import {useDispatch, useSelector} from 'react-redux';
+import {getFavorites} from '../../utils/api';
+import {
+  ApplicationState,
+  getBookDetailAction,
+  getFavoritesAction,
+} from '../../store';
+import HeaderCustom from '../../components/HeaderCustom';
 
-const MyFav = ({ navigation }: any) => {
+type Props = {
+  navigation: {navigate: Function; goBack: Function};
+  favorites: any;
+};
 
-  const books = [
-    {
-      id: 1,
-      image: 'https://assets1.bmstatic.com/assets/books-covers/98/be/tUOBGULx-ipad.jpg?height=352',
-      title: 'I am Malala',
-      isFav: true
-    },
-    {
-      id: 2,
-      image: 'https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352',
-      title: 'Kreativitas Tanpa Batas',
-      isFav: true
-    },
-    {
-      id: 3,
-      image: 'https://assets1.bmstatic.com/assets/books-covers/c4/80/sJPnaHJP-ipad.jpg?height=352',
-      title: 'Catatan Indah untuk Tuhan',
-      isFav: true
-    }
-  ];
+const MyFav = ({
+  navigation,
+  favorites = useSelector(
+    (state: ApplicationState) => state.favoriteReducer.favorites,
+  ),
+}: Props) => {
+  const dispacth = useDispatch();
+
+  useEffect(() => {
+    const fetching = async () => {
+      let user = await getDataLoginHelper();
+      dispacth(getFavoritesAction(user?.token) as any);
+    };
+
+    fetching();
+  }, []);
 
   return (
     <View style={styles.containerMain}>
-       <FlatList
-          data={books}
-          numColumns={3}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item, index }) => <ListItemBookCover item={item} index={index} onPress={() => {}} />}
-          contentContainerStyle={styles.listContainer}
-        />
+      <HeaderCustom title="Favorit" onBack={() => navigation.goBack()} />
+      <FlatList
+        data={favorites}
+        numColumns={3}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item, index}) => (
+          <ListItemBookCover
+            isFav={true}
+            item={item}
+            index={index}
+            onPress={(params: any) =>
+              dispacth(getBookDetailAction(params?.id, navigation) as any)
+            }
+          />
+        )}
+        contentContainerStyle={styles.listContainer}
+      />
     </View>
   );
 };
@@ -52,6 +66,6 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: 16,
-    marginTop:16
+    marginTop: 16,
   },
 });

@@ -27,7 +27,7 @@ export const getFavoritesAction = (token: any) => {
 
       dispatch({
         type: 'GetFavorites',
-        payload: res.data,
+        payload: res.data.data,
       });
     } catch (err: any) {
       console.log('err GetFavorites', err.response.data);

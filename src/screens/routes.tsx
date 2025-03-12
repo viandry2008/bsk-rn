@@ -98,9 +98,9 @@ const MainNavigation = (props: any) => {
       <Stack.Screen
         name="MyFav"
         component={MyFav}
-        // options={{
-        //   headerShown: false,
-        // }}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen
         name="EditProfile"

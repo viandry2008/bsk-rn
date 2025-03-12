@@ -1,10 +1,16 @@
 import Icon from '@react-native-vector-icons/fontawesome6';
 import React from 'react';
-import { Image, StyleSheet, TouchableOpacity, View, Dimensions } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Dimensions,
+} from 'react-native';
 import TextComp from '../../components/TextComp';
 import Colors from '../../styles/colors';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const ITEM_WIDTH = (width - 48) / 3;
 const ITEM_HEIGHT = 210;
 
@@ -12,30 +18,44 @@ type Props = {
   item: any;
   index: number;
   onPress: Function;
+  isFav?: any;
 };
 
-const ListItemBookCover = ({ item, index, onPress }: Props) => {
+const ListItemBookCover = ({item, index, onPress, isFav}: Props) => {
   return (
     <TouchableOpacity
       key={index}
-      onPress={() => onPress()}
-      style={[styles.container, { width: ITEM_WIDTH }]}
-    >
+      onPress={() => onPress(item)}
+      style={[styles.container, {width: ITEM_WIDTH}]}>
       {/* Gambar Buku */}
       <View>
-      <Image source={{ uri: item?.image }} style={[styles.image, { width: ITEM_WIDTH, height: ITEM_HEIGHT }]} />
+        {item?.resources?.map((res: any) => {
+          if (res?.rel == 'cover') {
+            return (
+              <Image
+                source={{uri: res?.href}}
+                style={[styles.image, {width: ITEM_WIDTH, height: ITEM_HEIGHT}]}
+              />
+            );
+          }
+        })}
 
-      {/* Ikon Love jika item.isFav == true */}
-        {item.isFav && (
+        {isFav == true ? (
           <View style={styles.favoriteIcon}>
             <Icon name="heart" size={16} color={Colors.white} />
           </View>
-        )}
+        ) : null}
       </View>
 
       {/* Konten Buku */}
       <View style={styles.content}>
-        <TextComp type="semibold" color={Colors.gray1} size={14} value={item?.title} numberOfLines={2} />
+        <TextComp
+          type="semibold"
+          color={Colors.gray1}
+          size={14}
+          value={item?.metadata?.title}
+          numberOfLines={2}
+        />
       </View>
     </TouchableOpacity>
   );
