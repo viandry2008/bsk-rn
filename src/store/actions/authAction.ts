@@ -34,7 +34,7 @@ export const postLoginAction = (data: any, navigation: any) => {
         loading: false,
       });
 
-      saveDataLoginHelper(res.data.token);
+      saveDataLoginHelper(res.data.token.toString());
 
       navigation.reset({
         index: 0,

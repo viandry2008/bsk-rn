@@ -1,5 +1,5 @@
 import Icon from '@react-native-vector-icons/fontawesome6';
-import React, {useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {
   FlatList,
   Image,
@@ -13,17 +13,20 @@ import {useDispatch, useSelector} from 'react-redux';
 import LoadingComp from '../../components/LoadingComp';
 import TextComp from '../../components/TextComp';
 import ListItemBookCover from '../../containers/BookCover/ListItemBookCover';
-import {ApplicationState, postLogoutAppAction} from '../../store';
+import {ApplicationState, getMeAction, postLogoutAppAction} from '../../store';
 import Colors from '../../styles/colors';
+import {getDataLoginHelper} from '../../utils/helpers';
 
 type Props = {
   loading: boolean;
   navigation: {navigate: Function};
+  user: any;
 };
 
 const ProfilePage = ({
   navigation,
   loading = useSelector((state: ApplicationState) => state.authReducer.loading),
+  user = useSelector((state: ApplicationState) => state.profileReducer.user),
 }: Props) => {
   const dispatch = useDispatch();
   const modalizeRef = useRef<Modalize>(null);
@@ -48,6 +51,15 @@ const ProfilePage = ({
       title: 'Catatan Indah untuk Tuhan',
     },
   ];
+
+  useEffect(() => {
+    const fetching = async () => {
+      let user = await getDataLoginHelper();
+      dispatch(getMeAction(user?.token) as any);
+    };
+
+    fetching();
+  }, []);
 
   return (
     <View style={styles.containerMain}>
@@ -74,13 +86,17 @@ const ProfilePage = ({
 
       {/* Profile Section */}
       <View style={styles.profileSection}>
-        <Image
-          source={require('../../assets/images/sigma.jpg')}
-          style={styles.profileImage}
-        />
+        {user?.thumbnail == null ? (
+          <Image
+            source={{uri: 'https://fakeimg.pl/60x60?text=not+found'}}
+            style={styles.profileImage}
+          />
+        ) : (
+          <Image source={{uri: user?.thumbnail}} style={styles.profileImage} />
+        )}
         <View>
-          <Text style={styles.profileName}>John Doe</Text>
-          <Text style={styles.profileEmail}>johndoe@example.com</Text>
+          <Text style={styles.profileName}>{user?.full_name}</Text>
+          <Text style={styles.profileEmail}>{user?.email}</Text>
         </View>
       </View>
 
@@ -153,12 +169,13 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    height: 70,
+    height: 100,
     backgroundColor: Colors.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
+    paddingTop: 32,
   },
   button: {
     width: 32,
@@ -175,6 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary,
     paddingHorizontal: 16,
     paddingBottom: 60,
+    paddingTop: 16,
   },
   profileImage: {
     width: 60,

@@ -1,11 +1,7 @@
 import axios from 'axios';
 import {Dispatch} from 'react';
-import {postLogin} from '../../utils/api';
-import {
-  headerAxiosHelper,
-  messageHelper,
-  saveDataLoginHelper,
-} from '../../utils/helpers';
+import {getMe} from '../../utils/api';
+import {headerAxiosHelper, messageHelper} from '../../utils/helpers';
 
 interface GetMe {
   type: 'GetMe';
@@ -17,19 +13,14 @@ export type ProfileAction = GetMe;
 
 export const getMeAction = (token: any) => {
   return async (dispatch: Dispatch<ProfileAction>) => {
-    dispatch({
-      type: 'GetMe',
-      loading: true,
-      payload: '',
-    });
     try {
-      const res = await axios.get(postLogin, headerAxiosHelper(token));
+      const res = await axios.get(getMe, headerAxiosHelper(token));
       console.log('res GetMe', res.data);
 
       dispatch({
         type: 'GetMe',
-        loading: false,
         payload: res.data,
+        loading: false,
       });
     } catch (err: any) {
       console.log('err GetMe', err.response.data);
@@ -37,8 +28,8 @@ export const getMeAction = (token: any) => {
 
       dispatch({
         type: 'GetMe',
-        loading: false,
         payload: '',
+        loading: false,
       });
     }
   };

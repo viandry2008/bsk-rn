@@ -10,7 +10,7 @@ export const formatDateHelper = (value: any, format: any) => {
 export const headerAxiosHelper = (token?: any) => {
   return {
     headers: {
-      Authorization: 'Token ' + token,
+      Authorization: 'Bearer ' + token,
       Accept: 'application/json',
       'Content-Type': 'multipart/form-data; charset=utf-8',
     },
