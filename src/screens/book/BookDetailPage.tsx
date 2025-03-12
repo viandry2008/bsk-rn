@@ -1,6 +1,6 @@
 import React from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import BookBannerComp from '../../components/BookComp/BookBannerComp';
 import BookButtonActionComp from '../../components/BookComp/BookButtonActionComp';
 import BookInfoComp from '../../components/BookComp/BookInfoComp';
@@ -8,7 +8,7 @@ import BookReviewComp from '../../components/BookComp/BookReviewComp';
 import HeaderCustom from '../../components/HeaderCustom';
 import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
-import {ApplicationState} from '../../store';
+import {ApplicationState, getBookDetailAction} from '../../store';
 import Colors from '../../styles/colors';
 
 type Props = {
@@ -24,6 +24,7 @@ const BookDetailPage = ({
     (state: ApplicationState) => state.bookReducer.booksCategory,
   ),
 }: Props) => {
+  const dispacth = useDispatch();
   return (
     <View style={styles.container}>
       <HeaderCustom onBack={() => navigation.goBack()} title="Detail" />
@@ -62,7 +63,9 @@ const BookDetailPage = ({
               item={item}
               index={index}
               type="row"
-              onPress={() => navigation.push('BookDetail')}
+              onPress={(params: any) =>
+                dispacth(getBookDetailAction(params?.id, navigation) as any)
+              }
             />
           )}
           keyExtractor={(item: any) => item.id}
