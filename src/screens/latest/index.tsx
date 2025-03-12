@@ -19,6 +19,7 @@ import {
   getCategoriesAction,
 } from '../../store';
 import Colors from '../../styles/colors';
+import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function};
@@ -72,6 +73,9 @@ const LatestPage = ({
         numColumns={2}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 3}}
+        ListEmptyComponent={() => {
+          return <NoDataComp />;
+        }}
       />
 
       <Modalize ref={modalizeRef} modalHeight={400}>

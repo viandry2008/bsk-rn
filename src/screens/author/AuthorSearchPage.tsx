@@ -7,6 +7,7 @@ import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
 import {ApplicationState, getAuthorsSearchAction} from '../../store';
 import Colors from '../../styles/colors';
 import {messageHelper} from '../../utils/helpers';
+import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
@@ -49,6 +50,9 @@ const AuthorSearchPage = ({
         numColumns={3}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 8}}
+        ListEmptyComponent={() => {
+          return <NoDataComp />;
+        }}
       />
     </View>
   );

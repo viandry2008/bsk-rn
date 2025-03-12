@@ -12,6 +12,7 @@ import Colors from '../../styles/colors';
 import CustomFormInput from '../../components/customFormInput';
 import TextComp from '../../components/TextComp';
 import {messageHelper} from '../../utils/helpers';
+import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
@@ -74,6 +75,9 @@ const BookSearchPage = ({
         numColumns={2}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 3}}
+        ListEmptyComponent={() => {
+          return <NoDataComp />;
+        }}
       />
     </View>
   );

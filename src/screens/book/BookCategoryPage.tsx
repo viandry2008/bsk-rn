@@ -5,6 +5,7 @@ import HeaderCustom from '../../components/HeaderCustom';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import {ApplicationState, getBookDetailAction} from '../../store';
 import Colors from '../../styles/colors';
+import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
@@ -42,6 +43,9 @@ const BookCategoryPage = ({
         numColumns={2}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 3}}
+        ListEmptyComponent={() => {
+          return <NoDataComp />;
+        }}
       />
     </View>
   );

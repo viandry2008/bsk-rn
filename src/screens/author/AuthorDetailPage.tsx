@@ -7,6 +7,7 @@ import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import {ApplicationState, getBookDetailAction} from '../../store';
 import Colors from '../../styles/colors';
+import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {goBack: Function; navigate: Function};
@@ -58,6 +59,9 @@ const AuthorDetailPage = ({
           numColumns={2}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 3}}
+          ListEmptyComponent={() => {
+            return <NoDataComp />;
+          }}
         />
       </ScrollView>
     </View>

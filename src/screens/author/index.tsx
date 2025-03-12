@@ -10,6 +10,7 @@ import {
 } from '../../store';
 import Colors from '../../styles/colors';
 import LoadingComp from '../../components/LoadingComp';
+import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function};
@@ -56,6 +57,9 @@ const AuthorPage = ({
         numColumns={3}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 8}}
+        ListEmptyComponent={() => {
+          return <NoDataComp />;
+        }}
       />
     </View>
   );

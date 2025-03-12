@@ -16,6 +16,8 @@ import {
 import Colors from '../../styles/colors';
 import {getDataLoginHelper} from '../../utils/helpers';
 import LoadingComp from '../../components/LoadingComp';
+import NoDataComp from '../../components/NoDataComp';
+import DimensionStyle from '../../styles/DimensionStyle';
 
 type Props = {
   navigation: {goBack: Function; push: Function};
@@ -101,6 +103,13 @@ const BookDetailPage = ({
           horizontal
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 8, marginBottom: 16}}
+          ListEmptyComponent={() => {
+            return (
+              <View style={{width: DimensionStyle.dimensionWidth * 1}}>
+                <NoDataComp />
+              </View>
+            );
+          }}
         />
       </ScrollView>
     </View>

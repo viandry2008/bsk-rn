@@ -9,6 +9,7 @@ import {
   getCategoriesAction,
 } from '../../store';
 import Colors from '../../styles/colors';
+import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   categories: any;
@@ -54,6 +55,9 @@ const CategoryPage = ({
         numColumns={2}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal: 3}}
+        ListEmptyComponent={() => {
+          return <NoDataComp />;
+        }}
       />
     </View>
   );

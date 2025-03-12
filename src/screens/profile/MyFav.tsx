@@ -1,16 +1,16 @@
 import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
-import ListItemBookCover from '../../containers/BookCover/ListItemBookCover';
-import Colors from '../../styles/colors';
-import {getDataLoginHelper} from '../../utils/helpers';
 import {useDispatch, useSelector} from 'react-redux';
-import {getFavorites} from '../../utils/api';
+import HeaderCustom from '../../components/HeaderCustom';
+import NoDataComp from '../../components/NoDataComp';
+import ListItemBookCover from '../../containers/BookCover/ListItemBookCover';
 import {
   ApplicationState,
   getBookDetailAction,
   getFavoritesAction,
 } from '../../store';
-import HeaderCustom from '../../components/HeaderCustom';
+import Colors from '../../styles/colors';
+import {getDataLoginHelper} from '../../utils/helpers';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
@@ -52,6 +52,9 @@ const MyFav = ({
           />
         )}
         contentContainerStyle={styles.listContainer}
+        ListEmptyComponent={() => {
+          return <NoDataComp />;
+        }}
       />
     </View>
   );
