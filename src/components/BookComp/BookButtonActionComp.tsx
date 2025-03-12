@@ -14,7 +14,7 @@ type Props = {
 const BookButtonActionComp = ({onFavorite, onRead, onReport}: Props) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity onPress={() => onFavorite()} style={styles.card}>
         <Icon name="heart" size={24} color={Colors.black} iconStyle="regular" />
         <TextComp
           type="regular"
@@ -24,7 +24,7 @@ const BookButtonActionComp = ({onFavorite, onRead, onReport}: Props) => {
         />
       </TouchableOpacity>
       <View style={styles.line} />
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity onPress={() => onRead()} style={styles.card}>
         <Icon
           name="book-open-reader"
           size={24}
@@ -34,7 +34,7 @@ const BookButtonActionComp = ({onFavorite, onRead, onReport}: Props) => {
         <TextComp type="regular" color={Colors.gray2} size={11} value="Baca" />
       </TouchableOpacity>
       <View style={styles.line} />
-      <TouchableOpacity style={styles.card}>
+      <TouchableOpacity onPress={() => onReport()} style={styles.card}>
         <Icon
           name="circle-exclamation"
           size={24}

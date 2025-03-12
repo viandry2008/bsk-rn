@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import BookBannerComp from '../../components/BookComp/BookBannerComp';
@@ -8,13 +8,20 @@ import BookReviewComp from '../../components/BookComp/BookReviewComp';
 import HeaderCustom from '../../components/HeaderCustom';
 import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
-import {ApplicationState, getBookDetailAction} from '../../store';
+import {
+  ApplicationState,
+  getBookDetailAction,
+  postFavoriteAction,
+} from '../../store';
 import Colors from '../../styles/colors';
+import {getDataLoginHelper} from '../../utils/helpers';
+import LoadingComp from '../../components/LoadingComp';
 
 type Props = {
   navigation: {goBack: Function; push: Function};
   book: any;
   booksCategory: any;
+  loading: boolean;
 };
 
 const BookDetailPage = ({
@@ -23,10 +30,32 @@ const BookDetailPage = ({
   booksCategory = useSelector(
     (state: ApplicationState) => state.bookReducer.booksCategory,
   ),
+  loading = useSelector(
+    (state: ApplicationState) => state.favoriteReducer.loading,
+  ),
 }: Props) => {
   const dispacth = useDispatch();
+  const [token, setToken] = useState<any>(null);
+
+  useEffect(() => {
+    const fetching = async () => {
+      let user = await getDataLoginHelper();
+      setToken(user?.token);
+    };
+
+    fetching();
+  }, []);
+
+  const handelAddFavorite = () => {
+    let body = {
+      ebook_id: book?.id,
+    };
+    dispacth(postFavoriteAction(token, body) as any);
+  };
+
   return (
     <View style={styles.container}>
+      <LoadingComp loading={loading} />
       <HeaderCustom onBack={() => navigation.goBack()} title="Detail" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <BookBannerComp
@@ -37,7 +66,7 @@ const BookDetailPage = ({
           view={book?.metadata?.viewed}
         />
         <BookButtonActionComp
-          onFavorite={() => {}}
+          onFavorite={() => handelAddFavorite()}
           onRead={() => {}}
           onReport={() => {}}
         />

@@ -67,7 +67,7 @@ export const getBookDetailAction = (id: any, navigation: any) => {
         payload: res.data,
       });
 
-      navigation.navigate('BookDetail');
+      navigation == null ? null : navigation.navigate('BookDetail');
     } catch (err: any) {
       console.log('err GetBookDetail', err.response.data);
       messageHelper(err.response.data.message, 'danger');
