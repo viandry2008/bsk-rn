@@ -16,7 +16,14 @@ const CardInfoAuthorComp = ({image, name, desc}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Image source={{uri: image}} style={styles.image} />
+        {image == null ? (
+          <Image
+            source={{uri: 'https://fakeimg.pl/70x70?text=not+found'}}
+            style={styles.image}
+          />
+        ) : (
+          <Image source={{uri: image}} style={styles.image} />
+        )}
         <View style={{flex: 1}}>
           <TextComp
             type="semibold"
@@ -25,7 +32,7 @@ const CardInfoAuthorComp = ({image, name, desc}: Props) => {
             value={name}
           />
           <Spacing size={8} />
-          <View style={styles.row}>
+          {/* <View style={styles.row}>
             <Icon
               name="youtube"
               size={18}
@@ -58,7 +65,7 @@ const CardInfoAuthorComp = ({image, name, desc}: Props) => {
               onPress={() => {}}
               style={{marginRight: 10}}
             />
-          </View>
+          </View> */}
         </View>
       </View>
       <Spacing size={8} />

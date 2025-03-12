@@ -5,6 +5,7 @@ const initialState = {
   authorsSearch: [],
   authorDetail: '',
   authorBooks: [],
+  loading: false,
 };
 
 const AuthorReducer = (state = initialState, action: AuthorAction) => {
@@ -28,6 +29,7 @@ const AuthorReducer = (state = initialState, action: AuthorAction) => {
       return {
         ...state,
         authorBooks: action.payload,
+        loading: action.loading,
       };
     default:
       return state;

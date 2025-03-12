@@ -25,6 +25,7 @@ interface GetAuthorDetail {
 interface GetAuthorBooks {
   type: 'GetAuthorBooks';
   payload: any;
+  loading: boolean;
 }
 
 export type AuthorAction =
@@ -91,12 +92,8 @@ export const getAuthorsSearchAction = (search: any, page: any) => {
   };
 };
 
-export const getAuthorDetailAction = (id: any) => {
+export const getAuthorDetailAction = (id: any, navigation: any) => {
   return async (dispatch: Dispatch<AuthorAction>) => {
-    dispatch({
-      type: 'GetAuthorDetail',
-      payload: '',
-    });
     try {
       const res = await axios.get(
         getAuthorDetail({id: id}),
@@ -108,6 +105,8 @@ export const getAuthorDetailAction = (id: any) => {
         type: 'GetAuthorDetail',
         payload: res.data,
       });
+
+      dispatch(getAuthorBooksAction(res.data.id, 1, navigation) as any);
     } catch (err: any) {
       console.log('err GetAuthorDetail', err.response.data);
       messageHelper(err.response.data.message, 'danger');
@@ -120,11 +119,12 @@ export const getAuthorDetailAction = (id: any) => {
   };
 };
 
-export const getAuthorBooksAction = (id: any, page: any) => {
+export const getAuthorBooksAction = (id: any, page: any, navigation: any) => {
   return async (dispatch: Dispatch<AuthorAction>) => {
     dispatch({
       type: 'GetAuthorBooks',
-      payload: '',
+      payload: [],
+      loading: true,
     });
     try {
       const res = await axios.get(
@@ -135,8 +135,11 @@ export const getAuthorBooksAction = (id: any, page: any) => {
 
       dispatch({
         type: 'GetAuthorBooks',
-        payload: res.data,
+        payload: res.data.data,
+        loading: false,
       });
+
+      navigation.navigate('AuthorDetail');
     } catch (err: any) {
       console.log('err GetAuthorBooks', err.response.data);
       messageHelper(err.response.data.message, 'danger');
@@ -144,6 +147,7 @@ export const getAuthorBooksAction = (id: any, page: any) => {
       dispatch({
         type: 'GetAuthorBooks',
         payload: '',
+        loading: false,
       });
     }
   };

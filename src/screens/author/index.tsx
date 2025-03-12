@@ -3,18 +3,27 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import HeaderAuthorComp from '../../components/AuthorComp/HeaderAuthorComp';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
-import {ApplicationState, getAuthorsAction} from '../../store';
+import {
+  ApplicationState,
+  getAuthorDetailAction,
+  getAuthorsAction,
+} from '../../store';
 import Colors from '../../styles/colors';
+import LoadingComp from '../../components/LoadingComp';
 
 type Props = {
   navigation: {navigate: Function};
   authors: any;
+  loading: boolean;
 };
 
 const AuthorPage = ({
   navigation,
   authors = useSelector(
     (state: ApplicationState) => state.authorReducer.authors,
+  ),
+  loading = useSelector(
+    (state: ApplicationState) => state.authorReducer.loading,
   ),
 }: Props) => {
   const dispatch = useDispatch();
@@ -29,6 +38,7 @@ const AuthorPage = ({
 
   return (
     <View style={styles.container}>
+      <LoadingComp loading={loading} />
       <HeaderAuthorComp onSearch={() => navigation.navigate('AuthorSearch')} />
       <FlatList
         data={authors}
@@ -36,7 +46,9 @@ const AuthorPage = ({
           <ListItemAuthorCt
             item={item}
             index={index}
-            onPress={() => navigation.navigate('AuthorDetail')}
+            onPress={(params: any) =>
+              dispatch(getAuthorDetailAction(params?.id, navigation) as any)
+            }
             type="column"
           />
         )}

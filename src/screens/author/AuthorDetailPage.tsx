@@ -1,53 +1,37 @@
 import React from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import CardInfoAuthorComp from '../../components/AuthorComp/CardInfoAuthorComp';
 import HeaderCustom from '../../components/HeaderCustom';
 import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
+import {ApplicationState, getBookDetailAction} from '../../store';
 import Colors from '../../styles/colors';
 
 type Props = {
   navigation: {goBack: Function; navigate: Function};
+  author: any;
+  authorBooks: any;
 };
 
-const AuthorDetailPage = ({navigation}: Props) => {
-  const books = [
-    {
-      id: 1,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/98/be/tUOBGULx-ipad.jpg?height=352',
-      title: 'i am Malala',
-      author: 'Malala Yousafzai',
-      rating: 4,
-      price: 0,
-    },
-    {
-      id: 2,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352',
-      title: 'Kreativitas Tanpa Batas',
-      author: 'Tim Kick Andy',
-      rating: 5,
-      price: 10000,
-    },
-    {
-      id: 3,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/c4/80/sJPnaHJP-ipad.jpg?height=352',
-      title: 'Catatan Indah untuk Tuhan',
-      author: 'Saptuari Sugiharto',
-      rating: 4,
-      price: 11000,
-    },
-  ];
+const AuthorDetailPage = ({
+  navigation,
+  author = useSelector(
+    (state: ApplicationState) => state.authorReducer.authorDetail,
+  ),
+  authorBooks = useSelector(
+    (state: ApplicationState) => state.authorReducer.authorBooks,
+  ),
+}: Props) => {
+  const dispatch = useDispatch();
 
   return (
     <View style={styles.container}>
       <HeaderCustom title="Author Info" onBack={() => navigation.goBack()} />
       <ScrollView showsVerticalScrollIndicator={false}>
         <CardInfoAuthorComp
-          image="https://randomuser.me/api/portraits/men/44.jpg"
-          name="John Thor"
+          image={author?.thumbnail}
+          name={author?.name}
           desc="Integer molestie ante sed turpis ornare, ac bibendum ante varius. Aliquam commodo ultrices metus nec placerat. Aliquam iaculis neque ut faucibus tempus. Nullam ullamcorper lorem dui, in laoreet tellus vulputate sed."
         />
         <View style={{marginVertical: 8, paddingHorizontal: 16}}>
@@ -59,13 +43,15 @@ const AuthorDetailPage = ({navigation}: Props) => {
           />
         </View>
         <FlatList
-          data={books}
+          data={authorBooks}
           renderItem={({item, index}) => (
             <ListItemBookCt
               item={item}
               index={index}
               type="column"
-              onPress={() => navigation.navigate('BookDetail')}
+              onPress={(params: any) =>
+                dispatch(getBookDetailAction(params?.id, navigation) as any)
+              }
             />
           )}
           keyExtractor={(item: any) => item.id}
