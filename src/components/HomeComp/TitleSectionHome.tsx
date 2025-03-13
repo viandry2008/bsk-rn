@@ -15,7 +15,7 @@ const TitleSectionHome = ({title, onPress}: Props) => {
     <View style={styles.container}>
       <TextComp type="semibold" color={Colors.black} size={16} value={title} />
       {onPress == undefined ? null : (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => onPress()}>
           <Icon
             name="arrow-right"
             color={Colors.primary}

@@ -10,27 +10,27 @@ import {
 import {Modalize} from 'react-native-modalize';
 import {useDispatch, useSelector} from 'react-redux';
 import HeaderLatesComp from '../../components/LatestComp/HeaderLatesComp';
+import NoDataComp from '../../components/NoDataComp';
 import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import {
   ApplicationState,
   getBookDetailAction,
-  getBooksByCategoryAction,
+  getBooksLatestAction,
   getCategoriesAction,
 } from '../../store';
 import Colors from '../../styles/colors';
-import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function};
-  books: any;
+  booksLatest: any;
   categories: any;
 };
 
 const LatestPage = ({
   navigation,
-  books = useSelector(
-    (state: ApplicationState) => state.bookReducer.booksCategory,
+  booksLatest = useSelector(
+    (state: ApplicationState) => state.bookReducer.booksLatest,
   ),
   categories = useSelector(
     (state: ApplicationState) => state.categoryReducer.categories,
@@ -45,7 +45,7 @@ const LatestPage = ({
   useEffect(() => {
     const fetching = async () => {
       dispatch(getCategoriesAction() as any);
-      dispatch(getBooksByCategoryAction('', 1, null) as any);
+      dispatch(getBooksLatestAction('', 1) as any);
     };
 
     fetching();
@@ -54,11 +54,16 @@ const LatestPage = ({
   return (
     <View style={styles.container}>
       <HeaderLatesComp
-        onSearch={() => navigation.navigate('BookSearch', category)}
+        onSearch={() =>
+          navigation.navigate('BookSearch', {
+            type: 'latest',
+            title: 'Cari Buku',
+          })
+        }
         onMenu={() => modalizeRef.current?.open()}
       />
       <FlatList
-        data={books}
+        data={booksLatest}
         renderItem={({item, index}) => (
           <ListItemBookCt
             item={item}
@@ -86,7 +91,7 @@ const LatestPage = ({
             onPress={() => {
               modalizeRef.current?.close();
               setCategory({});
-              dispatch(getBooksByCategoryAction('', 1, null) as any);
+              dispatch(getBooksLatestAction('', 1) as any);
             }}
             style={styles.listCat}>
             <View style={{flex: 1}}>
@@ -113,7 +118,7 @@ const LatestPage = ({
                 onPress={() => {
                   modalizeRef.current?.close();
                   setCategory(item);
-                  dispatch(getBooksByCategoryAction(item, 1, null) as any);
+                  dispatch(getBooksLatestAction(item?.slug, 1) as any);
                 }}
                 style={styles.listCat}>
                 <View style={{flex: 1}}>

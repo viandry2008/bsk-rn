@@ -1,64 +1,59 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import HeaderCustom from '../../components/HeaderCustom';
+import NoDataComp from '../../components/NoDataComp';
+import CustomFormInput from '../../components/customFormInput';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import {
   ApplicationState,
+  getAllBooksAction,
   getBookDetailAction,
-  getBooksAction,
 } from '../../store';
 import Colors from '../../styles/colors';
-import CustomFormInput from '../../components/customFormInput';
-import TextComp from '../../components/TextComp';
-import {messageHelper} from '../../utils/helpers';
-import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
   route: any;
   books: any;
+  booksLatest: any;
 };
 
 const BookSearchPage = ({
   navigation,
   route,
-  books = useSelector((state: ApplicationState) => state.bookReducer.books),
+  books = useSelector((state: ApplicationState) => state.bookReducer.booksAll),
 }: Props) => {
-  const [category, setCategory] = useState(route?.params);
   const dispatch = useDispatch();
+
+  const [type, setType] = useState(route?.params?.type);
 
   const [search, setSearch] = useState('');
 
+  useEffect(() => {
+    const fetching = async () => {
+      dispatch(getAllBooksAction(route?.params?.type, 1, '') as any);
+    };
+
+    fetching();
+  }, []);
+
   return (
     <View style={styles.container}>
-      <HeaderCustom title={'Cari Buku'} onBack={() => navigation.goBack()} />
+      <HeaderCustom
+        title={route?.params?.title}
+        onBack={() => navigation.goBack()}
+      />
       <CustomFormInput
         placholder="Cari buku...."
         val={search}
         change={(v: string) => setSearch(v)}
         onSubmitEditing={() =>
           search == ''
-            ? messageHelper('Masukan nama buku', 'danger')
-            : dispatch(
-                getBooksAction(
-                  1,
-                  category?.slug == undefined ? '' : category?.slug,
-                  search,
-                ) as any,
-              )
+            ? dispatch(getAllBooksAction(type, 1, '') as any)
+            : dispatch(getAllBooksAction(type, 1, search) as any)
         }
       />
-      {route?.params?.text != undefined ? (
-        <View style={{paddingHorizontal: 16, marginBottom: 8}}>
-          <TextComp
-            type="semibold"
-            color={Colors.black}
-            size={14}
-            value={route?.params?.text}
-          />
-        </View>
-      ) : null}
       <FlatList
         data={books}
         renderItem={({item, index}) => (

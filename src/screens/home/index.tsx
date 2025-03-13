@@ -67,7 +67,15 @@ const HomePage = ({
             dispatch(getBookDetailAction(banner?.id, navigation) as any)
           }
         />
-        <TitleSectionHome title="Buku Populer" onPress={() => {}} />
+        <TitleSectionHome
+          title="Buku Populer"
+          onPress={() =>
+            navigation.navigate('BookSearch', {
+              type: 'popular',
+              title: 'Buku Populer',
+            })
+          }
+        />
         <FlatList
           data={booksTrending}
           renderItem={({item, index}) => (
@@ -75,7 +83,9 @@ const HomePage = ({
               item={item}
               index={index}
               type="row"
-              onPress={() => navigation.navigate('BookDetail')}
+              onPress={(params: any) =>
+                dispatch(getBookDetailAction(params?.id, navigation) as any)
+              }
             />
           )}
           keyExtractor={(item: any) => item.id}
@@ -101,7 +111,15 @@ const HomePage = ({
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 8}}
         />
-        <TitleSectionHome title="Buku Unggulan" onPress={() => {}} />
+        <TitleSectionHome
+          title="Buku Unggulan"
+          onPress={() =>
+            navigation.navigate('BookSearch', {
+              type: 'featured',
+              title: 'Buku Unggulan',
+            })
+          }
+        />
         <FlatList
           data={booksFeaured}
           renderItem={({item, index}) => (
@@ -109,7 +127,9 @@ const HomePage = ({
               item={item}
               index={index}
               type="row"
-              onPress={() => navigation.navigate('BookDetail')}
+              onPress={(params: any) =>
+                dispatch(getBookDetailAction(params?.id, navigation) as any)
+              }
             />
           )}
           keyExtractor={(item: any) => item.id}

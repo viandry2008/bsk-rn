@@ -21,6 +21,8 @@ interface GetBooks {
   readonly type: 'GetBooks';
   payload: any;
 }
+
+// NEW
 interface GetBooksTrending {
   readonly type: 'GetBooksTrending';
   payload: any;
@@ -29,13 +31,23 @@ interface GetBooksFeatured {
   readonly type: 'GetBooksFeatured';
   payload: any;
 }
+interface GetBooksLatest {
+  readonly type: 'GetBooksLatest';
+  payload: any;
+}
+interface GetAllBooks {
+  readonly type: 'GetAllBooks';
+  payload: any;
+}
 
 export type BookAction =
   | GetBooksByCategory
   | GetBookDetail
   | GetBooks
   | GetBooksTrending
-  | GetBooksFeatured;
+  | GetBooksFeatured
+  | GetBooksLatest
+  | GetAllBooks;
 
 export const getBooksByCategoryAction = (
   category: any,
@@ -122,6 +134,7 @@ export const getBooksAction = (page: any, categoryId: any, search: any) => {
   };
 };
 
+// NEW
 export const getBooksTrendingAction = (limit: any) => {
   return async (dispatch: Dispatch<BookAction>) => {
     try {
@@ -178,6 +191,68 @@ export const getBooksFeaturedActions = (limit: any) => {
 
       dispatch({
         type: 'GetBooksFeatured',
+        payload: [],
+      });
+    }
+  };
+};
+
+export const getBooksLatestAction = (category: any, page: any) => {
+  return async (dispatch: Dispatch<BookAction>) => {
+    try {
+      const res = await axios.get(
+        getAllBooks({
+          category: category,
+          type: 'latest',
+          page: page,
+          limit: 10,
+          query: '',
+        }),
+        headerAxiosHelper(),
+      );
+      console.log('res getBooksLatestAction', res.data);
+
+      dispatch({
+        type: 'GetBooksLatest',
+        payload: res.data.data,
+      });
+    } catch (err: any) {
+      console.log('err getBooksLatestAction', err.response.data);
+      messageHelper(err.response.data.message, 'danger');
+
+      dispatch({
+        type: 'GetBooksLatest',
+        payload: [],
+      });
+    }
+  };
+};
+
+export const getAllBooksAction = (type: any, page: any, query: any) => {
+  return async (dispatch: Dispatch<BookAction>) => {
+    try {
+      const res = await axios.get(
+        getAllBooks({
+          category: '',
+          type: type,
+          page: page,
+          limit: 10,
+          query: query == '' ? '' : query,
+        }),
+        headerAxiosHelper(),
+      );
+      console.log('res getAllBooksAction', res.data);
+
+      dispatch({
+        type: 'GetAllBooks',
+        payload: res.data.data,
+      });
+    } catch (err: any) {
+      console.log('err getAllBooksAction', err.response.data);
+      messageHelper(err.response.data.message, 'danger');
+
+      dispatch({
+        type: 'GetAllBooks',
         payload: [],
       });
     }

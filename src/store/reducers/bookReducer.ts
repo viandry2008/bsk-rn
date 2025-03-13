@@ -7,6 +7,8 @@ const initialState = {
   banner: '',
   booksTrending: [],
   booksFeaured: [],
+  booksLatest: [],
+  booksAll: [],
 };
 
 const BookReducer = (state = initialState, action: BookAction) => {
@@ -37,6 +39,16 @@ const BookReducer = (state = initialState, action: BookAction) => {
       return {
         ...state,
         booksFeaured: action.payload,
+      };
+    case 'GetBooksLatest':
+      return {
+        ...state,
+        booksLatest: action.payload,
+      };
+    case 'GetAllBooks':
+      return {
+        ...state,
+        booksAll: action.payload,
       };
     default:
       return state;
