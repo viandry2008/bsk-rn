@@ -104,7 +104,10 @@ const HomePage = ({
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 8}}
         />
-        <TitleSectionHome title="Autor" onPress={() => {}} />
+        <TitleSectionHome
+          title="Autor"
+          onPress={() => navigation.navigate('MainHome', {screen: 'Author'})}
+        />
         <FlatList
           data={authorHome}
           renderItem={({item, index}) => (

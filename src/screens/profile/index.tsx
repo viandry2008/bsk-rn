@@ -122,13 +122,13 @@ const ProfilePage = ({
       <Modalize ref={modalizeRef} modalHeight={250}>
         <FlatList
           data={[
-            {
-              id: 1,
-              title: 'Edit Profile',
-              onPress: () => {
-                navigation.navigate('EditProfile');
-              },
-            },
+            // {
+            //   id: 1,
+            //   title: 'Edit Profile',
+            //   onPress: () => {
+            //     navigation.navigate('EditProfile');
+            //   },
+            // },
             {
               id: 2,
               title: 'My Favourite',
