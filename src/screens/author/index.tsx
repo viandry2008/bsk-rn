@@ -2,26 +2,27 @@ import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import HeaderAuthorComp from '../../components/AuthorComp/HeaderAuthorComp';
+import LoadingComp from '../../components/LoadingComp';
+import NoDataComp from '../../components/NoDataComp';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
 import {
   ApplicationState,
+  getAllAuthorsAction,
   getAuthorDetailAction,
-  getAuthorsAction,
 } from '../../store';
 import Colors from '../../styles/colors';
-import LoadingComp from '../../components/LoadingComp';
-import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   navigation: {navigate: Function};
   authors: any;
   loading: boolean;
+  allAuthors: any;
 };
 
 const AuthorPage = ({
   navigation,
-  authors = useSelector(
-    (state: ApplicationState) => state.authorReducer.authors,
+  allAuthors = useSelector(
+    (state: ApplicationState) => state.authorReducer.allAuthors,
   ),
   loading = useSelector(
     (state: ApplicationState) => state.authorReducer.loading,
@@ -31,7 +32,7 @@ const AuthorPage = ({
 
   useEffect(() => {
     const fetching = async () => {
-      dispatch(getAuthorsAction(1) as any);
+      dispatch(getAllAuthorsAction(1, '') as any);
     };
 
     fetching();
@@ -42,7 +43,7 @@ const AuthorPage = ({
       <LoadingComp loading={loading} />
       <HeaderAuthorComp onSearch={() => navigation.navigate('AuthorSearch')} />
       <FlatList
-        data={authors}
+        data={allAuthors}
         renderItem={({item, index}) => (
           <ListItemAuthorCt
             item={item}

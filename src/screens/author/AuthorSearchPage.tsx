@@ -3,21 +3,21 @@ import {StyleSheet, View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {useDispatch, useSelector} from 'react-redux';
 import HeaderAuthorSearchComp from '../../components/AuthorComp/HeaderAuthorSearchComp';
-import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
-import {ApplicationState, getAuthorsSearchAction} from '../../store';
-import Colors from '../../styles/colors';
-import {messageHelper} from '../../utils/helpers';
 import NoDataComp from '../../components/NoDataComp';
+import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
+import {ApplicationState, getAllAuthorsAction} from '../../store';
+import Colors from '../../styles/colors';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
   authors: any;
+  allAuthors: any;
 };
 
 const AuthorSearchPage = ({
   navigation,
-  authors = useSelector(
-    (state: ApplicationState) => state.authorReducer.authorsSearch,
+  allAuthors = useSelector(
+    (state: ApplicationState) => state.authorReducer.allAuthors,
   ),
 }: Props) => {
   const dispatch = useDispatch();
@@ -32,12 +32,12 @@ const AuthorSearchPage = ({
         search={search}
         onSubmitEditing={() =>
           search == ''
-            ? messageHelper('Harap masukan pencarian', 'danger')
-            : dispatch(getAuthorsSearchAction(search, 1) as any)
+            ? dispatch(getAllAuthorsAction(1, '') as any)
+            : dispatch(getAllAuthorsAction(1, search) as any)
         }
       />
       <FlatList
-        data={authors}
+        data={allAuthors}
         renderItem={({item, index}) => (
           <ListItemAuthorCt
             item={item}

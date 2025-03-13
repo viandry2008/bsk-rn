@@ -1,26 +1,15 @@
 import {AuthorAction} from '../actions';
 
 const initialState = {
-  authors: [],
-  authorsSearch: [],
   authorDetail: '',
   authorBooks: [],
   loading: false,
   authorHome: [],
+  allAuthors: [],
 };
 
 const AuthorReducer = (state = initialState, action: AuthorAction) => {
   switch (action.type) {
-    case 'GetAuthors':
-      return {
-        ...state,
-        authors: action.payload,
-      };
-    case 'GetAuthorsSearch':
-      return {
-        ...state,
-        authorsSearch: action.payload,
-      };
     case 'GetAuthorDetail':
       return {
         ...state,
@@ -36,6 +25,11 @@ const AuthorReducer = (state = initialState, action: AuthorAction) => {
       return {
         ...state,
         authorHome: action.payload,
+      };
+    case 'GetAllAuthors':
+      return {
+        ...state,
+        allAuthors: action.payload,
       };
     default:
       return state;
