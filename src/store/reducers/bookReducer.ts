@@ -3,8 +3,7 @@ import {BookAction} from '../actions';
 const initialState = {
   booksCategory: [],
   bookDetail: '',
-  books: [],
-  banner: '',
+  banner: [],
   booksTrending: [],
   booksFeaured: [],
   booksLatest: [],
@@ -18,17 +17,17 @@ const BookReducer = (state = initialState, action: BookAction) => {
         ...state,
         booksCategory: action.payload,
         books: [],
-        banner: action.banner,
+        banner: [],
       };
     case 'GetBookDetail':
       return {
         ...state,
         bookDetail: action.payload,
       };
-    case 'GetBooks':
+    case 'GetBookBanner':
       return {
         ...state,
-        books: action.payload,
+        banner: action.payload,
       };
     case 'GetBooksTrending':
       return {

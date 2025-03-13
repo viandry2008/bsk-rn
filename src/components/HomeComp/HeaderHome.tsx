@@ -1,14 +1,9 @@
-import Icon from '@react-native-vector-icons/fontawesome6';
 import React from 'react';
-import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Colors from '../../styles/colors';
 import TextComp from '../TextComp';
 
-type Props = {
-  onPress: Function;
-};
-
-const HeaderHome = ({onPress}: Props) => {
+const HeaderHome = () => {
   return (
     <View style={styles.container}>
       <TextComp
@@ -17,9 +12,6 @@ const HeaderHome = ({onPress}: Props) => {
         size={24}
         value="Ebook App"
       />
-      <TouchableOpacity onPress={() => onPress()} style={styles.button}>
-        <Icon name="gear" size={18} color={Colors.gray1} iconStyle="solid" />
-      </TouchableOpacity>
     </View>
   );
 };

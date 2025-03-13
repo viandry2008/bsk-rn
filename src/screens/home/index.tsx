@@ -11,8 +11,8 @@ import {
   ApplicationState,
   getAuthorDetailAction,
   getAuthorHomeAction,
+  getBookBannerAction,
   getBookDetailAction,
-  getBooksByCategoryAction,
   getBooksFeaturedActions,
   getBooksTrendingAction,
 } from '../../store';
@@ -45,7 +45,7 @@ const HomePage = ({
   useEffect(() => {
     const fetching = async () => {
       let user = await getDataLoginHelper();
-      dispatch(getBooksByCategoryAction('', 1, null) as any);
+      dispatch(getBookBannerAction() as any);
       dispatch(getBooksTrendingAction(5) as any);
       dispatch(getAuthorHomeAction() as any);
       dispatch(getBooksFeaturedActions(5) as any);
@@ -56,17 +56,28 @@ const HomePage = ({
 
   return (
     <View style={styles.container}>
-      <HeaderHome onPress={() => {}} />
+      <HeaderHome />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ButtonSearch onPress={() => {}} />
-        <InfoBookHome
-          image={banner?.resources}
-          title={banner?.metadata?.title}
-          author={banner?.metadata?.author}
+        <ButtonSearch
           onPress={() =>
-            dispatch(getBookDetailAction(banner?.id, navigation) as any)
+            navigation.navigate('BookSearch', {
+              type: 'latest',
+              title: 'Cari Buku',
+            })
           }
         />
+        {banner?.map((item: any) => {
+          return (
+            <InfoBookHome
+              image={item?.resources}
+              title={item?.metadata?.title}
+              author={item?.metadata?.author}
+              onPress={() =>
+                dispatch(getBookDetailAction(item?.id, navigation) as any)
+              }
+            />
+          );
+        })}
         <TitleSectionHome
           title="Buku Populer"
           onPress={() =>
