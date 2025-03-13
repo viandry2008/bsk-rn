@@ -20,6 +20,11 @@ export const getAuthorsSearch = ({search, page}: any) =>
 export const getAuthorDetail = ({id}: any) => API_URL + `api/v2/authors/${id}`;
 export const getAuthorBooks = ({id, page}: any) =>
   API_URL + `api/v2/authors/${id}/books?page=${page}`;
+export const getAllAuthors = ({limit, page, query}: any) =>
+  API_URL +
+  `api/v2/authors?limit=${limit}&page=${page}${
+    query != '' ? `&query=${query}` : ''
+  }`;
 
 // books
 export const getBooksByCategory = ({category, page}: any) =>
@@ -27,6 +32,11 @@ export const getBooksByCategory = ({category, page}: any) =>
 export const getBooks = ({page, category, search}: any) =>
   API_URL + `api/v2/ebooks?page=${page}&category=${category}&query=${search}`;
 export const getBookDetail = ({id}: any) => API_URL + `api/v2/ebook/${id}`;
+export const getAllBooks = ({category, type, limit, page, query}: any) =>
+  API_URL +
+  `api/v2/ebooks?category=${category}&type=${type}&limit=${limit}&page=${page}${
+    query != '' ? `&query=${query}` : ''
+  }`;
 
 // profile
 export const getMe = API_URL + `api/v2/profil/getbytoken`;

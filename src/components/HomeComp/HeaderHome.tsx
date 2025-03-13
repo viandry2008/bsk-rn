@@ -1,8 +1,8 @@
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import Icon from '@react-native-vector-icons/fontawesome6';
 import React from 'react';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import Colors from '../../styles/colors';
 import TextComp from '../TextComp';
-import Icon from '@react-native-vector-icons/fontawesome6';
 
 type Props = {
   onPress: Function;
@@ -29,12 +29,13 @@ export default HeaderHome;
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 70,
+    height: 100,
     backgroundColor: Colors.white,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
+    paddingTop: 32,
   },
   button: {
     backgroundColor: Colors.lightPrimary,

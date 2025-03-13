@@ -1,4 +1,4 @@
-import {AuthorAction, CategoryAction} from '../actions';
+import {AuthorAction} from '../actions';
 
 const initialState = {
   authors: [],
@@ -6,6 +6,7 @@ const initialState = {
   authorDetail: '',
   authorBooks: [],
   loading: false,
+  authorHome: [],
 };
 
 const AuthorReducer = (state = initialState, action: AuthorAction) => {
@@ -30,6 +31,11 @@ const AuthorReducer = (state = initialState, action: AuthorAction) => {
         ...state,
         authorBooks: action.payload,
         loading: action.loading,
+      };
+    case 'GetAuthorHome':
+      return {
+        ...state,
+        authorHome: action.payload,
       };
     default:
       return state;

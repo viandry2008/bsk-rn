@@ -1,11 +1,17 @@
 import axios from 'axios';
 import {Dispatch} from 'react';
-import {getBookDetail, getBooks, getBooksByCategory} from '../../utils/api';
+import {
+  getAllBooks,
+  getBookDetail,
+  getBooks,
+  getBooksByCategory,
+} from '../../utils/api';
 import {headerAxiosHelper, messageHelper} from '../../utils/helpers';
 
 interface GetBooksByCategory {
   readonly type: 'GetBooksByCategory';
   payload: any;
+  banner: any;
 }
 interface GetBookDetail {
   readonly type: 'GetBookDetail';
@@ -15,8 +21,21 @@ interface GetBooks {
   readonly type: 'GetBooks';
   payload: any;
 }
+interface GetBooksTrending {
+  readonly type: 'GetBooksTrending';
+  payload: any;
+}
+interface GetBooksFeatured {
+  readonly type: 'GetBooksFeatured';
+  payload: any;
+}
 
-export type BookAction = GetBooksByCategory | GetBookDetail | GetBooks;
+export type BookAction =
+  | GetBooksByCategory
+  | GetBookDetail
+  | GetBooks
+  | GetBooksTrending
+  | GetBooksFeatured;
 
 export const getBooksByCategoryAction = (
   category: any,
@@ -24,10 +43,6 @@ export const getBooksByCategoryAction = (
   navigation: any,
 ) => {
   return async (dispatch: Dispatch<BookAction>) => {
-    dispatch({
-      type: 'GetBooksByCategory',
-      payload: [],
-    });
     try {
       const res = await axios.get(
         getBooksByCategory({
@@ -41,6 +56,7 @@ export const getBooksByCategoryAction = (
       dispatch({
         type: 'GetBooksByCategory',
         payload: res.data.data,
+        banner: res.data.data[0],
       });
 
       navigation == null ? null : navigation.navigate('BookCategory', category);
@@ -51,6 +67,7 @@ export const getBooksByCategoryAction = (
       dispatch({
         type: 'GetBooksByCategory',
         payload: [],
+        banner: '',
       });
     }
   };
@@ -99,6 +116,68 @@ export const getBooksAction = (page: any, categoryId: any, search: any) => {
 
       dispatch({
         type: 'GetBooks',
+        payload: [],
+      });
+    }
+  };
+};
+
+export const getBooksTrendingAction = (limit: any) => {
+  return async (dispatch: Dispatch<BookAction>) => {
+    try {
+      const res = await axios.get(
+        getAllBooks({
+          category: '',
+          type: 'popular',
+          page: 1,
+          limit: limit,
+          query: '',
+        }),
+        headerAxiosHelper(),
+      );
+      console.log('res getBooksTrendingAction', res.data);
+
+      dispatch({
+        type: 'GetBooksTrending',
+        payload: res.data.data,
+      });
+    } catch (err: any) {
+      console.log('err getBooksTrendingAction', err.response.data);
+      messageHelper(err.response.data.message, 'danger');
+
+      dispatch({
+        type: 'GetBooksTrending',
+        payload: [],
+      });
+    }
+  };
+};
+
+export const getBooksFeaturedActions = (limit: any) => {
+  return async (dispatch: Dispatch<BookAction>) => {
+    try {
+      const res = await axios.get(
+        getAllBooks({
+          category: '',
+          type: 'featured',
+          page: 1,
+          limit: limit,
+          query: '',
+        }),
+        headerAxiosHelper(),
+      );
+      console.log('res getBooksFeaturedActions', res.data);
+
+      dispatch({
+        type: 'GetBooksFeatured',
+        payload: res.data.data,
+      });
+    } catch (err: any) {
+      console.log('err getBooksFeaturedActions', err.response.data);
+      messageHelper(err.response.data.message, 'danger');
+
+      dispatch({
+        type: 'GetBooksFeatured',
         payload: [],
       });
     }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {Dispatch} from 'react';
 import {
+  getAllAuthors,
   getAuthorBooks,
   getAuthorDetail,
   getAuthors,
@@ -27,12 +28,17 @@ interface GetAuthorBooks {
   payload: any;
   loading: boolean;
 }
+interface GetAuthorHome {
+  type: 'GetAuthorHome';
+  payload: any;
+}
 
 export type AuthorAction =
   | GetAuthors
   | GetAuthorsSearch
   | GetAuthorDetail
-  | GetAuthorBooks;
+  | GetAuthorBooks
+  | GetAuthorHome;
 
 export const getAuthorsAction = (page: any) => {
   return async (dispatch: Dispatch<AuthorAction>) => {
@@ -148,6 +154,31 @@ export const getAuthorBooksAction = (id: any, page: any, navigation: any) => {
         type: 'GetAuthorBooks',
         payload: '',
         loading: false,
+      });
+    }
+  };
+};
+
+export const getAuthorHomeAction = () => {
+  return async (dispatch: Dispatch<AuthorAction>) => {
+    try {
+      const res = await axios.get(
+        getAllAuthors({limit: 5, page: 1, query: ''}),
+        headerAxiosHelper(),
+      );
+      console.log('res getAuthorHomeAction', res.data);
+
+      dispatch({
+        type: 'GetAuthorHome',
+        payload: res.data.data,
+      });
+    } catch (err: any) {
+      console.log('err getAuthorHomeAction', err.response.data);
+      messageHelper(err.response.data.message, 'danger');
+
+      dispatch({
+        type: 'GetAuthorHome',
+        payload: [],
       });
     }
   };

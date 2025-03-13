@@ -1,83 +1,54 @@
 import React, {useEffect} from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import ButtonSearch from '../../components/HomeComp/ButtonSearch';
 import HeaderHome from '../../components/HomeComp/HeaderHome';
 import InfoBookHome from '../../components/HomeComp/InfoBookHome';
-import Colors from '../../styles/colors';
 import TitleSectionHome from '../../components/HomeComp/TitleSectionHome';
-import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
-import {useDispatch} from 'react-redux';
+import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
+import {
+  ApplicationState,
+  getAuthorDetailAction,
+  getAuthorHomeAction,
+  getBookDetailAction,
+  getBooksByCategoryAction,
+  getBooksFeaturedActions,
+  getBooksTrendingAction,
+} from '../../store';
+import Colors from '../../styles/colors';
 import {getDataLoginHelper} from '../../utils/helpers';
 
 type Props = {
   navigation: {navigate: Function};
+  banner: any;
+  booksTrending: any;
+  authorHome: any;
+  booksFeaured: any;
 };
 
-const HomePage = ({navigation}: Props) => {
+const HomePage = ({
+  navigation,
+  banner = useSelector((state: ApplicationState) => state.bookReducer.banner),
+  booksTrending = useSelector(
+    (state: ApplicationState) => state.bookReducer.booksTrending,
+  ),
+  authorHome = useSelector(
+    (state: ApplicationState) => state.authorReducer.authorHome,
+  ),
+  booksFeaured = useSelector(
+    (state: ApplicationState) => state.bookReducer.booksFeaured,
+  ),
+}: Props) => {
   const dispatch = useDispatch();
-
-  const books = [
-    {
-      id: 1,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/98/be/tUOBGULx-ipad.jpg?height=352',
-      title: 'i am Malala',
-      author: 'Malala Yousafzai',
-      rating: 4,
-      price: 0,
-    },
-    {
-      id: 2,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/e4/40/hpCPjcnN-ipad.jpg?height=352',
-      title: 'Kreativitas Tanpa Batas',
-      author: 'Tim Kick Andy',
-      rating: 5,
-      price: 10000,
-    },
-    {
-      id: 3,
-      image:
-        'https://assets1.bmstatic.com/assets/books-covers/c4/80/sJPnaHJP-ipad.jpg?height=352',
-      title: 'Catatan Indah untuk Tuhan',
-      author: 'Saptuari Sugiharto',
-      rating: 4,
-      price: 11000,
-    },
-  ];
-
-  const authors = [
-    {
-      id: 1,
-      image: 'https://randomuser.me/api/portraits/men/10.jpg',
-      name: 'John',
-    },
-    {
-      id: 2,
-      image: 'https://randomuser.me/api/portraits/men/89.jpg',
-      name: 'Due',
-    },
-    {
-      id: 3,
-      image: 'https://randomuser.me/api/portraits/men/12.jpg',
-      name: 'Alicent',
-    },
-    {
-      id: 4,
-      image: 'https://randomuser.me/api/portraits/men/82.jpg',
-      name: 'Tigreal',
-    },
-    {
-      id: 5,
-      image: 'https://randomuser.me/api/portraits/men/77.jpg',
-      name: 'Baltakost',
-    },
-  ];
 
   useEffect(() => {
     const fetching = async () => {
       let user = await getDataLoginHelper();
+      dispatch(getBooksByCategoryAction('', 1, null) as any);
+      dispatch(getBooksTrendingAction(5) as any);
+      dispatch(getAuthorHomeAction() as any);
+      dispatch(getBooksFeaturedActions(5) as any);
     };
 
     fetching();
@@ -89,14 +60,16 @@ const HomePage = ({navigation}: Props) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <ButtonSearch onPress={() => {}} />
         <InfoBookHome
-          image="https://assets1.bmstatic.com/assets/books-covers/a3/dc/Qee8N5gZ-ipad.jpg?height=352"
-          title="Lorem ipsum Dolor is Amet"
-          author="User"
-          onPress={() => {}}
+          image={banner?.resources}
+          title={banner?.metadata?.title}
+          author={banner?.metadata?.author}
+          onPress={() =>
+            dispatch(getBookDetailAction(banner?.id, navigation) as any)
+          }
         />
-        <TitleSectionHome title="Trending Books" onPress={() => {}} />
+        <TitleSectionHome title="Buku Populer" onPress={() => {}} />
         <FlatList
-          data={books}
+          data={booksTrending}
           renderItem={({item, index}) => (
             <ListItemBookCt
               item={item}
@@ -110,14 +83,16 @@ const HomePage = ({navigation}: Props) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 8}}
         />
-        <TitleSectionHome title="Best Authors" onPress={() => {}} />
+        <TitleSectionHome title="Autor" onPress={() => {}} />
         <FlatList
-          data={authors}
+          data={authorHome}
           renderItem={({item, index}) => (
             <ListItemAuthorCt
               item={item}
               index={index}
-              onPress={() => {}}
+              onPress={(params: any) =>
+                dispatch(getAuthorDetailAction(params?.id, navigation) as any)
+              }
               type="row"
             />
           )}
@@ -126,9 +101,9 @@ const HomePage = ({navigation}: Props) => {
           showsHorizontalScrollIndicator={false}
           contentContainerStyle={{paddingHorizontal: 8}}
         />
-        <TitleSectionHome title="Popular Books" onPress={() => {}} />
+        <TitleSectionHome title="Buku Unggulan" onPress={() => {}} />
         <FlatList
-          data={books}
+          data={booksFeaured}
           renderItem={({item, index}) => (
             <ListItemBookCt
               item={item}

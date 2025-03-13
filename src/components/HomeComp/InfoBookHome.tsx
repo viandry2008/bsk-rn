@@ -8,7 +8,7 @@ import BtnCustom from '../btnCustom';
 import Spacing from '../spacing';
 
 type Props = {
-  image: string;
+  image: any;
   title: string;
   author: string;
   onPress: Function;
@@ -17,22 +17,32 @@ type Props = {
 const InfoBookHome = ({image, title, author, onPress}: Props) => {
   return (
     <View style={styles.container}>
-      <Image
-        source={{
-          uri: image,
-        }}
-        style={styles.image}
-        borderRadius={16}
-      />
+      {image?.map((item: any) => {
+        if (item?.rel == 'cover') {
+          return (
+            <Image
+              source={{
+                uri: item?.href,
+              }}
+              style={styles.image}
+              borderRadius={16}
+            />
+          );
+        }
+      })}
       <View style={{flex: 1, marginLeft: 16}}>
         <TextComp type="bold" color={Colors.black} size={18} value={title} />
-        <Spacing size={4} />
-        <TextComp
-          type="semibold"
-          color={Colors.primary}
-          size={16}
-          value={'By ' + author}
-        />
+        {author == null ? null : (
+          <>
+            <Spacing size={4} />
+            <TextComp
+              type="semibold"
+              color={Colors.primary}
+              size={16}
+              value={'Oleh ' + author}
+            />
+          </>
+        )}
         <Spacing size={8} />
         <BtnCustom
           backgroundColor={Colors.primary}
@@ -58,11 +68,10 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightPrimary,
     borderRadius: 8,
     flexDirection: 'row',
-    alignItems: 'center',
   },
   image: {
-    width: 130,
-    height: 170,
+    width: 150,
+    height: 250,
     borderRadius: 16,
   },
 });
