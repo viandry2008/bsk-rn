@@ -11,9 +11,16 @@ type Props = {
   rating: any;
   review: any;
   onReview: Function;
+  userStatus: any;
 };
 
-const BookReviewComp = ({onAll, rating, review, onReview}: Props) => {
+const BookReviewComp = ({
+  onAll,
+  rating,
+  review,
+  onReview,
+  userStatus,
+}: Props) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -25,14 +32,16 @@ const BookReviewComp = ({onAll, rating, review, onReview}: Props) => {
             value="Ratings & Reviews"
           />
         </View>
-        <TouchableOpacity onPress={() => onAll()}>
-          <Icon
-            name="arrow-right"
-            size={18}
-            color={Colors.primary}
-            iconStyle="solid"
-          />
-        </TouchableOpacity>
+        {userStatus == 'Unauthenticated' ? null : (
+          <TouchableOpacity onPress={() => onAll()}>
+            <Icon
+              name="arrow-right"
+              size={18}
+              color={Colors.primary}
+              iconStyle="solid"
+            />
+          </TouchableOpacity>
+        )}
       </View>
       <Spacing size={8} />
       <View style={styles.row}>
@@ -43,6 +52,7 @@ const BookReviewComp = ({onAll, rating, review, onReview}: Props) => {
           value={rating}
         />
         <Spacing horizontal size={8} />
+
         <Rating
           type="star"
           ratingCount={5}
@@ -51,12 +61,14 @@ const BookReviewComp = ({onAll, rating, review, onReview}: Props) => {
           startingValue={rating}
         />
         <Spacing horizontal size={8} />
-        <TextComp
-          type="regular"
-          color={Colors.black}
-          size={12}
-          value={review + ' (Reviews)'}
-        />
+        {userStatus == 'Unauthenticated' ? null : (
+          <TextComp
+            type="regular"
+            color={Colors.black}
+            size={12}
+            value={review + ' (Reviews)'}
+          />
+        )}
       </View>
       <Spacing size={16} />
       <TouchableOpacity onPress={() => onReview()} style={styles.btn}>

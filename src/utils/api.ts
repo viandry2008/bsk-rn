@@ -30,3 +30,7 @@ export const getBookDetail = ({id}: any) => API_URL + `api/v2/ebook/${id}`;
 
 // profile
 export const getMe = API_URL + `api/v2/profil/getbytoken`;
+
+// review
+export const getReviews = ({id}: any) => API_URL + `api/v2/ebooks/${id}/rating`;
+export const postReview = ({id}: any) => API_URL + `api/v2/ebooks/${id}/rating`;

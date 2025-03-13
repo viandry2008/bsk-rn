@@ -6,24 +6,30 @@ import BookButtonActionComp from '../../components/BookComp/BookButtonActionComp
 import BookInfoComp from '../../components/BookComp/BookInfoComp';
 import BookReviewComp from '../../components/BookComp/BookReviewComp';
 import HeaderCustom from '../../components/HeaderCustom';
+import LoadingComp from '../../components/LoadingComp';
+import NoDataComp from '../../components/NoDataComp';
+import InputReviewComp from '../../components/ReviewComp/InputReviewComp';
 import TextComp from '../../components/TextComp';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import {
   ApplicationState,
   getBookDetailAction,
+  getMeAction,
+  getReviewsAction,
   postFavoriteAction,
+  postReviewAction,
 } from '../../store';
-import Colors from '../../styles/colors';
-import {getDataLoginHelper} from '../../utils/helpers';
-import LoadingComp from '../../components/LoadingComp';
-import NoDataComp from '../../components/NoDataComp';
 import DimensionStyle from '../../styles/DimensionStyle';
+import Colors from '../../styles/colors';
+import {getDataLoginHelper, messageHelper} from '../../utils/helpers';
 
 type Props = {
-  navigation: {goBack: Function; push: Function};
+  navigation: {goBack: Function; push: Function; navigate: Function};
   book: any;
   booksCategory: any;
   loading: boolean;
+  user: any;
+  loadingReview: boolean;
 };
 
 const BookDetailPage = ({
@@ -35,14 +41,23 @@ const BookDetailPage = ({
   loading = useSelector(
     (state: ApplicationState) => state.favoriteReducer.loading,
   ),
+  user = useSelector((state: ApplicationState) => state.profileReducer.user),
+  loadingReview = useSelector(
+    (state: ApplicationState) => state.reviewReducer.loading,
+  ),
 }: Props) => {
   const dispacth = useDispatch();
   const [token, setToken] = useState<any>(null);
+
+  const [visibleModal, setVisibleModal] = useState(false);
+  const [textReview, setTextReview] = useState('');
+  const [starReview, setStarReview] = useState(0);
 
   useEffect(() => {
     const fetching = async () => {
       let user = await getDataLoginHelper();
       setToken(user?.token);
+      dispacth(getMeAction(user?.token) as any);
     };
 
     fetching();
@@ -55,9 +70,29 @@ const BookDetailPage = ({
     dispacth(postFavoriteAction(token, body) as any);
   };
 
+  // handle review
+  const handleReview = () => {
+    if (textReview == '') {
+      messageHelper('Harap isi pesan review', 'danger');
+    } else {
+      let body = {
+        rating: starReview,
+        comment: textReview,
+        reviewer_name: user?.full_name,
+      };
+
+      dispacth(postReviewAction(token, body, book?.id) as any);
+
+      setStarReview(0);
+      setTextReview('');
+      setVisibleModal(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <LoadingComp loading={loading} />
+      <LoadingComp loading={loadingReview} />
       <HeaderCustom onBack={() => navigation.goBack()} title="Detail" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <BookBannerComp
@@ -74,10 +109,15 @@ const BookDetailPage = ({
         />
         <BookInfoComp desc={book?.metadata?.description} />
         <BookReviewComp
-          onAll={() => {}}
+          userStatus={user}
+          onAll={() => navigation.navigate('Review', {bookId: book?.id})}
           rating={book?.metadata?.rating}
           review={0}
-          onReview={() => {}}
+          onReview={() =>
+            user == 'Unauthenticated'
+              ? navigation.navigate('MainHome', {screen: 'Profile'})
+              : setVisibleModal(true)
+          }
         />
         <View style={{marginVertical: 8, paddingHorizontal: 16}}>
           <TextComp
@@ -112,6 +152,14 @@ const BookDetailPage = ({
           }}
         />
       </ScrollView>
+      <InputReviewComp
+        visible={visibleModal}
+        onVisible={() => setVisibleModal(false)}
+        onFinishRating={(v: any) => setStarReview(v)}
+        comment={textReview}
+        onChangeText={(v: string) => setTextReview(v)}
+        onSave={() => handleReview()}
+      />
     </View>
   );
 };

@@ -20,6 +20,7 @@ import {getDataLoginHelper} from '../utils/helpers';
 import AuthorSearchPage from './author/AuthorSearchPage';
 import BookCategoryPage from './book/BookCategoryPage';
 import BookSearchPage from './book/BookSearchPage';
+import ReviewPage from './review';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -108,6 +109,15 @@ const MainNavigation = (props: any) => {
         // options={{
         //   headerShown: false,
         // }}
+      />
+
+      {/* review */}
+      <Stack.Screen
+        name="Review"
+        component={ReviewPage}
+        options={{
+          headerShown: false,
+        }}
       />
 
       <Stack.Screen name="Privacy" component={Privacy} />

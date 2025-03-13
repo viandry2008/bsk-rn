@@ -26,11 +26,19 @@ export const getMeAction = (token: any) => {
       console.log('err GetMe', err.response.data);
       messageHelper(err.response.data.message, 'danger');
 
-      dispatch({
-        type: 'GetMe',
-        payload: '',
-        loading: false,
-      });
+      if (err.response.data?.message == 'Unauthenticated.') {
+        dispatch({
+          type: 'GetMe',
+          payload: 'Unauthenticated',
+          loading: false,
+        });
+      } else {
+        dispatch({
+          type: 'GetMe',
+          payload: '',
+          loading: false,
+        });
+      }
     }
   };
 };
