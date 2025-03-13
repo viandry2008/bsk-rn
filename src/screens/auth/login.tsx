@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
+  Linking,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -14,7 +13,9 @@ import Colors from '../../styles/colors';
 // import { RadioButton } from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import LoadingComp from '../../components/LoadingComp';
+import Spacing from '../../components/spacing';
 import {ApplicationState, postLoginAction} from '../../store';
+import DimensionStyle from '../../styles/DimensionStyle';
 import {messageHelper} from '../../utils/helpers';
 
 type Props = {
@@ -55,24 +56,29 @@ const Login = ({
   };
 
   return (
-    <SafeAreaView style={styles.wrap}>
+    <View style={styles.wrap}>
       <LoadingComp loading={loading} />
-      <StatusBar
-        backgroundColor="transparent"
-        barStyle={'dark-content'}
-        translucent
-      />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{flex: 1}}>
+        <View
+          style={{
+            flex: 1,
+            paddingHorizontal: 16,
+            paddingVertical: 16,
+            marginTop: DimensionStyle.dimensionHeight * 0.03,
+          }}>
           <View style={styles.skipButton}>
-            <BtnCustom title={'Skip'} onPress={() => {}} paddingVertical={8} />
+            <BtnCustom
+              title={'Skip'}
+              onPress={() => navigation?.navigate('MainHome')}
+              paddingVertical={8}
+            />
           </View>
           <Text style={styles.title}>Welcome Back!</Text>
           <Text style={styles.subtitle}>Login in to continue</Text>
 
-          <View style={{flex: 1, marginTop: 50}}>
+          <View style={{flex: 1, marginTop: 16}}>
             <CustomFormInput
-              placholder={'Email*'}
+              placholder={'Email'}
               val={form.email}
               change={(text: string) => onInputChange(text, 'email')}
             />
@@ -83,20 +89,21 @@ const Login = ({
               scureText
             />
           </View>
+          <Spacing size={16} />
 
-          <View style={styles.rememberForgotRow}>
+          {/* <View style={styles.rememberForgotRow}>
             <View style={styles.rememberMeContainer}>
-              {/* <RadioButton
+              <RadioButton
                             status={rememberMe ? 'checked' : 'unchecked'}
                             onPress={() => setRememberMe(!rememberMe)}
-                        /> */}
+                        />
               <Text>Remember me</Text>
             </View>
             <TouchableOpacity
               onPress={() => navigation?.navigate('ForgotPassword')}>
               <Text style={styles.forgotText}>Forgot Password?</Text>
             </TouchableOpacity>
-          </View>
+          </View> */}
 
           <BtnCustom title={'LOG IN'} onPress={() => handleLogin()} />
 
@@ -108,27 +115,32 @@ const Login = ({
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.orText}>Or continue with</Text>
+          {/* <Text style={styles.orText}>Or continue with</Text> */}
 
-          <TouchableOpacity style={styles.googleButton}>
-            {/* <Icon name="google" size={20} color={'white'} /> */}
+          {/* <TouchableOpacity style={styles.googleButton}>
+            <Icon name="google" size={20} color={'white'} iconStyle="brand" />
             <Text style={styles.googleText}>Login with Google</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <View style={styles.signupContainer}>
             <Text>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation?.navigate('Register')}>
+            <TouchableOpacity
+              onPress={() =>
+                Linking.openURL(
+                  'https://ebook-bsk-staging.resone.my.id/id/register',
+                )
+              }>
               <Text style={styles.signupText}>Sign Up</Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  wrap: {flex: 1, backgroundColor: Colors.lightPrimary, padding: 16},
+  wrap: {flex: 1, backgroundColor: Colors.lightPrimary},
   skipButton: {alignSelf: 'flex-end'},
   title: {fontSize: 24, fontWeight: 'bold', marginTop: 16},
   subtitle: {fontSize: 16, color: 'gray', marginBottom: 16},
