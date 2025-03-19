@@ -16,6 +16,8 @@ import ListItemBookCover from '../../containers/BookCover/ListItemBookCover';
 import {ApplicationState, getMeAction, postLogoutAppAction} from '../../store';
 import Colors from '../../styles/colors';
 import {getDataLoginHelper} from '../../utils/helpers';
+import Spacing from '../../components/spacing';
+import BtnCustom from '../../components/btnCustom';
 
 type Props = {
   loading: boolean;
@@ -62,100 +64,141 @@ const ProfilePage = ({
   }, []);
 
   return (
-    <View style={styles.containerMain}>
-      <LoadingComp loading={loading} />
-      {/* Header */}
-      <View style={styles.container}>
-        <TextComp
-          type="semibold"
-          color={Colors.white}
-          size={18}
-          value="Profile"
-        />
-        <TouchableOpacity
-          onPress={() => modalizeRef.current?.open()}
-          style={styles.button}>
-          <Icon
-            name="ellipsis-vertical"
-            size={18}
-            color={Colors.white}
-            iconStyle="solid"
-          />
-        </TouchableOpacity>
-      </View>
-
-      {/* Profile Section */}
-      <View style={styles.profileSection}>
-        {user?.thumbnail == null ? (
+    <View
+      style={[
+        styles.containerMain,
+        {
+          backgroundColor:
+            user == 'Unauthenticated' ? Colors.primary : Colors.white,
+        },
+      ]}>
+      {user == 'Unauthenticated' ? (
+        <View style={styles.content}>
           <Image
-            source={{uri: 'https://fakeimg.pl/60x60?text=not+found'}}
-            style={styles.profileImage}
+            source={require('../../assets/images/no_data.png')}
+            style={styles.image}
           />
-        ) : (
-          <Image source={{uri: user?.thumbnail}} style={styles.profileImage} />
-        )}
-        <View>
-          <Text style={styles.profileName}>{user?.full_name}</Text>
-          <Text style={styles.profileEmail}>{user?.email}</Text>
+          <TextComp
+            type="bold"
+            size={16}
+            color={Colors.black}
+            value="Login required"
+          />
+          <Spacing size={16} />
+          <BtnCustom
+            backgroundColor={Colors.white}
+            title="Log In"
+            textColor={Colors.primary}
+            onPress={() => dispatch(postLogoutAppAction(navigation) as any)}
+          />
         </View>
-      </View>
-
-      {/* Content Section */}
-      <View style={styles.contentSection}>
-        <View style={styles.continueBookContainer}>
-          <Text style={styles.continueBookText}>Continue Book</Text>
-          <View style={styles.continueBookUnderline} />
-        </View>
-
-        <FlatList
-          data={books}
-          numColumns={3}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item, index}) => (
-            <ListItemBookCover item={item} index={index} onPress={() => {}} />
-          )}
-          contentContainerStyle={styles.listContainer}
-        />
-      </View>
-
-      {/* Modalize */}
-      <Modalize ref={modalizeRef} modalHeight={250}>
-        <FlatList
-          data={[
-            // {
-            //   id: 1,
-            //   title: 'Edit Profile',
-            //   onPress: () => {
-            //     navigation.navigate('EditProfile');
-            //   },
-            // },
-            {
-              id: 2,
-              title: 'My Favourite',
-              onPress: () => {
-                navigation.navigate('MyFav');
-              },
-            },
-            {
-              id: 3,
-              title: 'Logout',
-              onPress: () => dispatch(postLogoutAppAction(navigation) as any),
-            },
-          ]}
-          keyExtractor={item => item.id.toString()}
-          renderItem={({item}: any) => (
-            <TouchableOpacity style={styles.modalItem} onPress={item.onPress}>
-              <Text style={styles.modalText}>{item.title}</Text>
+      ) : (
+        <>
+          <LoadingComp loading={loading} />
+          {/* Header */}
+          <View style={styles.container}>
+            <TextComp
+              type="semibold"
+              color={Colors.white}
+              size={18}
+              value="Profile"
+            />
+            <TouchableOpacity
+              onPress={() => modalizeRef.current?.open()}
+              style={styles.button}>
               <Icon
-                name="chevron-right"
-                size={16}
-                color={Colors.primary}
+                name="ellipsis-vertical"
+                size={18}
+                color={Colors.white}
                 iconStyle="solid"
               />
             </TouchableOpacity>
-          )}
-        />
-      </Modalize>
+          </View>
+
+          {/* Profile Section */}
+          <View style={styles.profileSection}>
+            {user?.thumbnail == null ? (
+              <Image
+                source={{uri: 'https://fakeimg.pl/60x60?text=not+found'}}
+                style={styles.profileImage}
+              />
+            ) : (
+              <Image
+                source={{uri: user?.thumbnail}}
+                style={styles.profileImage}
+              />
+            )}
+            <View>
+              <Text style={styles.profileName}>{user?.full_name}</Text>
+              <Text style={styles.profileEmail}>{user?.email}</Text>
+            </View>
+          </View>
+
+          {/* Content Section */}
+          <View style={styles.contentSection}>
+            <View style={styles.continueBookContainer}>
+              <Text style={styles.continueBookText}>Continue Book</Text>
+              <View style={styles.continueBookUnderline} />
+            </View>
+
+            <FlatList
+              data={books}
+              numColumns={3}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item, index}) => (
+                <ListItemBookCover
+                  item={item}
+                  index={index}
+                  onPress={() => {}}
+                />
+              )}
+              contentContainerStyle={styles.listContainer}
+            />
+          </View>
+
+          {/* Modalize */}
+          <Modalize ref={modalizeRef} modalHeight={250}>
+            <FlatList
+              data={[
+                // {
+                //   id: 1,
+                //   title: 'Edit Profile',
+                //   onPress: () => {
+                //     navigation.navigate('EditProfile');
+                //   },
+                // },
+                {
+                  id: 2,
+                  title: 'My Favourite',
+                  onPress: () => {
+                    navigation.navigate('MyFav');
+                  },
+                },
+                {
+                  id: 3,
+                  title: 'Logout',
+                  onPress: () =>
+                    dispatch(postLogoutAppAction(navigation) as any),
+                },
+              ]}
+              keyExtractor={item => item.id.toString()}
+              renderItem={({item}: any) => (
+                <TouchableOpacity
+                  style={styles.modalItem}
+                  onPress={item.onPress}>
+                  <Text style={styles.modalText}>{item.title}</Text>
+                  <Icon
+                    name="chevron-right"
+                    size={16}
+                    color={Colors.primary}
+                    iconStyle="solid"
+                  />
+                </TouchableOpacity>
+              )}
+            />
+          </Modalize>
+        </>
+      )}
     </View>
   );
 };
@@ -245,5 +288,16 @@ const styles = StyleSheet.create({
   },
   modalText: {
     fontSize: 16,
+  },
+
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image: {
+    width: 150,
+    height: 150,
+    resizeMode: 'contain',
   },
 });
