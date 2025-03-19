@@ -30,6 +30,7 @@ type Props = {
   loading: boolean;
   user: any;
   loadingReview: boolean;
+  bookPdf: any;
 };
 
 const BookDetailPage = ({
@@ -45,6 +46,7 @@ const BookDetailPage = ({
   loadingReview = useSelector(
     (state: ApplicationState) => state.reviewReducer.loading,
   ),
+  bookPdf = useSelector((state: ApplicationState) => state.bookReducer.bookPdf),
 }: Props) => {
   const dispacth = useDispatch();
   const [token, setToken] = useState<any>(null);
@@ -104,7 +106,7 @@ const BookDetailPage = ({
         />
         <BookButtonActionComp
           onFavorite={() => handelAddFavorite()}
-          onRead={() => {}}
+          onRead={() => navigation.navigate('BookPdf', {pdfLink: bookPdf})}
           onReport={() => {}}
         />
         <BookInfoComp desc={book?.metadata?.description} />

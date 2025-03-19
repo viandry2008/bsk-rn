@@ -33,7 +33,7 @@ const BookButtonActionComp = ({onFavorite, onRead, onReport}: Props) => {
         />
         <TextComp type="regular" color={Colors.gray2} size={11} value="Baca" />
       </TouchableOpacity>
-      <View style={styles.line} />
+      {/* <View style={styles.line} />
       <TouchableOpacity onPress={() => onReport()} style={styles.card}>
         <Icon
           name="circle-exclamation"
@@ -47,7 +47,7 @@ const BookButtonActionComp = ({onFavorite, onRead, onReport}: Props) => {
           size={11}
           value="Report"
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -65,7 +65,8 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
+    justifyContent: 'space-around',
     paddingHorizontal: 16,
   },
   card: {

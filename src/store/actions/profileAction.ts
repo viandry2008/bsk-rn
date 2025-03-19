@@ -24,7 +24,7 @@ export const getMeAction = (token: any) => {
       });
     } catch (err: any) {
       console.log('err GetMe', err.response.data);
-      messageHelper(err.response.data.message, 'danger');
+      // messageHelper(err.response.data.message, 'danger');
 
       if (err.response.data?.message == 'Unauthenticated.') {
         dispatch({

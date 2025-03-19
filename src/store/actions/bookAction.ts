@@ -10,6 +10,7 @@ interface GetBooksByCategory {
 interface GetBookDetail {
   readonly type: 'GetBookDetail';
   payload: any;
+  bookPdf: any;
 }
 interface GetBookBanner {
   readonly type: 'GetBookBanner';
@@ -81,9 +82,18 @@ export const getBookDetailAction = (id: any, navigation: any) => {
       const res = await axios.get(getBookDetail({id: id}), headerAxiosHelper());
       console.log('res GetBookDetail', res.data);
 
+      let bookFile;
+
+      res.data?.resources?.map((item: any) => {
+        if (item?.rel == 'book_file') {
+          bookFile = item?.href;
+        }
+      });
+
       dispatch({
         type: 'GetBookDetail',
         payload: res.data,
+        bookPdf: bookFile,
       });
 
       navigation == null ? null : navigation.navigate('BookDetail');
@@ -94,6 +104,7 @@ export const getBookDetailAction = (id: any, navigation: any) => {
       dispatch({
         type: 'GetBookDetail',
         payload: '',
+        bookPdf: '',
       });
     }
   };

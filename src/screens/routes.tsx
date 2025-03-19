@@ -21,6 +21,7 @@ import AuthorSearchPage from './author/AuthorSearchPage';
 import BookCategoryPage from './book/BookCategoryPage';
 import BookSearchPage from './book/BookSearchPage';
 import ReviewPage from './review';
+import BookPdfPage from './book/BookPdfPage';
 // import Colors from '../styles/colors';
 // import Font from '../styles/fonts';
 
@@ -75,6 +76,13 @@ const MainNavigation = (props: any) => {
       <Stack.Screen
         name="BookSearch"
         component={BookSearchPage}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="BookPdf"
+        component={BookPdfPage}
         options={{
           headerShown: false,
         }}

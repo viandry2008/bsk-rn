@@ -8,6 +8,7 @@ const initialState = {
   booksFeaured: [],
   booksLatest: [],
   booksAll: [],
+  bookPdf: '',
 };
 
 const BookReducer = (state = initialState, action: BookAction) => {
@@ -23,6 +24,7 @@ const BookReducer = (state = initialState, action: BookAction) => {
       return {
         ...state,
         bookDetail: action.payload,
+        bookPdf: action.bookPdf,
       };
     case 'GetBookBanner':
       return {
