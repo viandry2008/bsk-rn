@@ -21,7 +21,7 @@ import BtnCustom from '../../components/btnCustom';
 
 type Props = {
   loading: boolean;
-  navigation: {navigate: Function};
+  navigation: {navigate: Function; addListener: Function};
   user: any;
 };
 
@@ -55,12 +55,20 @@ const ProfilePage = ({
   ];
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetching();
+    });
+
     const fetching = async () => {
       let user = await getDataLoginHelper();
       dispatch(getMeAction(user?.token) as any);
     };
 
     fetching();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (

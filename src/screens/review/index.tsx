@@ -27,7 +27,7 @@ const ReviewPage = ({
   useEffect(() => {
     const fetching = async () => {
       let user = await getDataLoginHelper();
-      dispacth(getReviewsAction(user?.token, route?.params?.bookId) as any);
+      // dispacth(getReviewsAction(user?.token, route?.params?.bookId) as any);
     };
 
     fetching();
@@ -38,9 +38,7 @@ const ReviewPage = ({
       <HeaderCustom title="Review" onBack={() => navigation.goBack()} />
       <FlatList
         data={reviews}
-        renderItem={({item, index}) => (
-          <ListItemReviewCt item={item} key={index} />
-        )}
+        renderItem={({item, index}) => <ListItemReviewCt item={item} />}
         keyExtractor={(item: any) => item.id}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingVertical: 16}}

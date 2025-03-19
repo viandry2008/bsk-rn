@@ -31,6 +31,7 @@ type Props = {
   user: any;
   loadingReview: boolean;
   bookPdf: any;
+  reviews: any;
 };
 
 const BookDetailPage = ({
@@ -47,6 +48,9 @@ const BookDetailPage = ({
     (state: ApplicationState) => state.reviewReducer.loading,
   ),
   bookPdf = useSelector((state: ApplicationState) => state.bookReducer.bookPdf),
+  reviews = useSelector(
+    (state: ApplicationState) => state.reviewReducer.reviews,
+  ),
 }: Props) => {
   const dispacth = useDispatch();
   const [token, setToken] = useState<any>(null);
@@ -57,9 +61,12 @@ const BookDetailPage = ({
 
   useEffect(() => {
     const fetching = async () => {
-      let user = await getDataLoginHelper();
-      setToken(user?.token);
-      dispacth(getMeAction(user?.token) as any);
+      let dataLogin = await getDataLoginHelper();
+      setToken(dataLogin?.token);
+      dispacth(getMeAction(dataLogin?.token) as any);
+      if (dataLogin?.token != null || user == 'Unauthenticated') {
+        dispacth(getReviewsAction(dataLogin?.token, book?.id) as any);
+      }
     };
 
     fetching();
@@ -114,7 +121,7 @@ const BookDetailPage = ({
           userStatus={user}
           onAll={() => navigation.navigate('Review', {bookId: book?.id})}
           rating={book?.metadata?.rating}
-          review={0}
+          review={reviews?.length}
           onReview={() =>
             user == 'Unauthenticated'
               ? navigation.navigate('MainHome', {screen: 'Profile'})
