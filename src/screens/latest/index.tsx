@@ -22,7 +22,7 @@ import {
 import Colors from '../../styles/colors';
 
 type Props = {
-  navigation: {navigate: Function};
+  navigation: {navigate: Function; addListener: Function};
   booksLatest: any;
   categories: any;
 };
@@ -43,12 +43,20 @@ const LatestPage = ({
   const [category, setCategory] = useState<any>({});
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetching();
+    });
+
     const fetching = async () => {
       dispatch(getCategoriesAction() as any);
       dispatch(getBooksLatestAction('', 1) as any);
     };
 
     fetching();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (

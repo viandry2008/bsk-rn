@@ -13,7 +13,7 @@ import NoDataComp from '../../components/NoDataComp';
 
 type Props = {
   categories: any;
-  navigation: {navigate: Function};
+  navigation: {navigate: Function; addListener: Function};
 };
 
 const CategoryPage = ({
@@ -26,11 +26,19 @@ const CategoryPage = ({
   const [statusSearch, setStatusSearch] = useState(false);
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetching();
+    });
+
     const fetching = async () => {
       dispatch(getCategoriesAction() as any);
     };
 
     fetching();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (

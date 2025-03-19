@@ -20,7 +20,7 @@ import Colors from '../../styles/colors';
 import {getDataLoginHelper} from '../../utils/helpers';
 
 type Props = {
-  navigation: {navigate: Function};
+  navigation: {navigate: Function; addListener: Function};
   banner: any;
   booksTrending: any;
   authorHome: any;
@@ -43,6 +43,10 @@ const HomePage = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetching();
+    });
+
     const fetching = async () => {
       let user = await getDataLoginHelper();
       dispatch(getBookBannerAction() as any);
@@ -52,6 +56,10 @@ const HomePage = ({
     };
 
     fetching();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (

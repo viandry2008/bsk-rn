@@ -13,7 +13,7 @@ import {
 import Colors from '../../styles/colors';
 
 type Props = {
-  navigation: {navigate: Function};
+  navigation: {navigate: Function; addListener: Function};
   authors: any;
   loading: boolean;
   allAuthors: any;
@@ -31,11 +31,19 @@ const AuthorPage = ({
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      fetching();
+    });
+
     const fetching = async () => {
       dispatch(getAllAuthorsAction(1, '') as any);
     };
 
     fetching();
+
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   return (
