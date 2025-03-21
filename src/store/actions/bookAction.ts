@@ -45,14 +45,18 @@ export type BookAction =
 export const getBooksByCategoryAction = (
   category: any,
   page: any,
+  query: any,
   navigation: any,
 ) => {
   return async (dispatch: Dispatch<BookAction>) => {
     try {
       const res = await axios.get(
-        getBooksByCategory({
-          category: category == '' ? '' : category?.slug,
+        getAllBooks({
+          category: category?.slug,
+          type: '',
+          limit: 10,
           page: page,
+          query: query == '' ? '' : query,
         }),
         headerAxiosHelper(),
       );

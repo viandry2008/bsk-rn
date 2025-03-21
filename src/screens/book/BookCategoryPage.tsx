@@ -1,11 +1,16 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import HeaderCustom from '../../components/HeaderCustom';
-import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
-import {ApplicationState, getBookDetailAction} from '../../store';
-import Colors from '../../styles/colors';
 import NoDataComp from '../../components/NoDataComp';
+import CustomFormInput from '../../components/customFormInput';
+import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
+import {
+  ApplicationState,
+  getBookDetailAction,
+  getBooksByCategoryAction,
+} from '../../store';
+import Colors from '../../styles/colors';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
@@ -21,11 +26,28 @@ const BookCategoryPage = ({
   ),
 }: Props) => {
   const dispatch = useDispatch();
+  const [search, setSearch] = useState('');
+
   return (
     <View style={styles.container}>
       <HeaderCustom
         title={route?.params?.text}
         onBack={() => navigation.goBack()}
+      />
+      <CustomFormInput
+        val={search}
+        placholder="Cari buku"
+        change={(v: string) => setSearch(v)}
+        onSubmitEditing={() =>
+          dispatch(
+            getBooksByCategoryAction(
+              route?.params,
+              1,
+              search == '' ? '' : search,
+              null,
+            ) as any,
+          )
+        }
       />
       <FlatList
         data={books}
