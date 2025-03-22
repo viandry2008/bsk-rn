@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  Image,
   Linking,
   ScrollView,
   StyleSheet,
@@ -14,9 +15,15 @@ import Colors from '../../styles/colors';
 import {useDispatch, useSelector} from 'react-redux';
 import LoadingComp from '../../components/LoadingComp';
 import Spacing from '../../components/spacing';
-import {ApplicationState, postLoginAction} from '../../store';
+import {
+  ApplicationState,
+  postGoogleSiginAction,
+  postLoginAction,
+} from '../../store';
 import DimensionStyle from '../../styles/DimensionStyle';
 import {messageHelper} from '../../utils/helpers';
+import Icon from '@react-native-vector-icons/fontawesome6';
+import TextComp from '../../components/TextComp';
 
 type Props = {
   loading?: boolean;
@@ -115,12 +122,23 @@ const Login = ({
             </TouchableOpacity>
           </View>
 
-          {/* <Text style={styles.orText}>Or continue with</Text> */}
+          <Text style={styles.orText}>Or continue with</Text>
 
-          {/* <TouchableOpacity style={styles.googleButton}>
-            <Icon name="google" size={20} color={'white'} iconStyle="brand" />
-            <Text style={styles.googleText}>Login with Google</Text>
-          </TouchableOpacity> */}
+          <TouchableOpacity
+            onPress={() => dispacth(postGoogleSiginAction(navigation) as any)}
+            style={styles.googleButton}>
+            <Image
+              source={require('../../assets/icons/google.png')}
+              style={{width: 24, height: 24}}
+            />
+            <Spacing horizontal={true} size={16} />
+            <TextComp
+              type="semibold"
+              color={Colors.black}
+              size={16}
+              value="Login with Google"
+            />
+          </TouchableOpacity>
 
           <View style={styles.signupContainer}>
             <Text>Don't have an account? </Text>
@@ -168,10 +186,11 @@ const styles = StyleSheet.create({
   googleButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'red',
+    backgroundColor: Colors.white,
     padding: 10,
-    borderRadius: 5,
+    borderRadius: 16,
     marginVertical: 16,
+    justifyContent: 'center',
   },
   googleText: {color: 'white', marginLeft: 10},
   signupContainer: {flexDirection: 'row', marginTop: 16, alignSelf: 'center'},

@@ -16,6 +16,11 @@ const AuthReducer = (state = initialState, action: AuthAction) => {
         ...state,
         loading: action.loading,
       };
+    case 'PostGoogleSignin':
+      return {
+        ...state,
+        loading: action.loading,
+      };
     default:
       return state;
   }

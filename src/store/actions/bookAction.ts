@@ -17,14 +17,17 @@ interface GetBookDetail {
 interface GetBookBanner {
   readonly type: 'GetBookBanner';
   payload: any;
+  loading: boolean;
 }
 interface GetBooksTrending {
   readonly type: 'GetBooksTrending';
   payload: any;
+  loading: boolean;
 }
 interface GetBooksFeatured {
   readonly type: 'GetBooksFeatured';
   payload: any;
+  loading: boolean;
 }
 interface GetBooksLatest {
   readonly type: 'GetBooksLatest';
@@ -133,6 +136,11 @@ export const getBookDetailAction = (id: any, navigation: any) => {
 
 export const getBookBannerAction = () => {
   return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({
+      type: 'GetBookBanner',
+      payload: [],
+      loading: true,
+    });
     try {
       const res = await axios.get(
         getAllBooks({
@@ -149,6 +157,7 @@ export const getBookBannerAction = () => {
       dispatch({
         type: 'GetBookBanner',
         payload: res.data.data,
+        loading: false,
       });
     } catch (err: any) {
       console.log('err getBookBannerAction', err.response.data);
@@ -157,12 +166,18 @@ export const getBookBannerAction = () => {
       dispatch({
         type: 'GetBookBanner',
         payload: [],
+        loading: false,
       });
     }
   };
 };
 export const getBooksTrendingAction = (limit: any) => {
   return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({
+      type: 'GetBooksTrending',
+      payload: [],
+      loading: true,
+    });
     try {
       const res = await axios.get(
         getAllBooks({
@@ -179,6 +194,7 @@ export const getBooksTrendingAction = (limit: any) => {
       dispatch({
         type: 'GetBooksTrending',
         payload: res.data.data,
+        loading: false,
       });
     } catch (err: any) {
       console.log('err getBooksTrendingAction', err.response.data);
@@ -187,6 +203,7 @@ export const getBooksTrendingAction = (limit: any) => {
       dispatch({
         type: 'GetBooksTrending',
         payload: [],
+        loading: false,
       });
     }
   };
@@ -194,6 +211,11 @@ export const getBooksTrendingAction = (limit: any) => {
 
 export const getBooksFeaturedActions = (limit: any) => {
   return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({
+      type: 'GetBooksFeatured',
+      payload: [],
+      loading: true,
+    });
     try {
       const res = await axios.get(
         getAllBooks({
@@ -210,6 +232,7 @@ export const getBooksFeaturedActions = (limit: any) => {
       dispatch({
         type: 'GetBooksFeatured',
         payload: res.data.data,
+        loading: false,
       });
     } catch (err: any) {
       console.log('err getBooksFeaturedActions', err.response.data);
@@ -218,6 +241,7 @@ export const getBooksFeaturedActions = (limit: any) => {
       dispatch({
         type: 'GetBooksFeatured',
         payload: [],
+        loading: false,
       });
     }
   };

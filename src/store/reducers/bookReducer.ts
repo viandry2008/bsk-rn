@@ -4,8 +4,11 @@ const initialState = {
   booksCategory: [],
   bookDetail: '',
   banner: [],
+  loadingBanner: false,
   booksTrending: [],
+  loadingBooksTrending: false,
   booksFeaured: [],
+  loadingBooksFeaured: false,
   booksLatest: [],
   booksAll: [],
   bookPdf: '',
@@ -36,16 +39,19 @@ const BookReducer = (state = initialState, action: BookAction) => {
       return {
         ...state,
         banner: action.payload,
+        loadingBanner: action.loading,
       };
     case 'GetBooksTrending':
       return {
         ...state,
         booksTrending: action.payload,
+        loadingBooksTrending: action.loading,
       };
     case 'GetBooksFeatured':
       return {
         ...state,
         booksFeaured: action.payload,
+        loadingBooksFeaured: action.loading,
       };
     case 'GetBooksLatest':
       return {

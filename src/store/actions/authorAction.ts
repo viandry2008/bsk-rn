@@ -15,6 +15,7 @@ interface GetAuthorBooks {
 interface GetAuthorHome {
   type: 'GetAuthorHome';
   payload: any;
+  loading: boolean;
 }
 
 interface GetAllAuthors {
@@ -93,6 +94,11 @@ export const getAuthorBooksAction = (id: any, page: any, navigation: any) => {
 
 export const getAuthorHomeAction = () => {
   return async (dispatch: Dispatch<AuthorAction>) => {
+    dispatch({
+      type: 'GetAuthorHome',
+      payload: [],
+      loading: true,
+    });
     try {
       const res = await axios.get(
         getAllAuthors({limit: 5, page: 1, query: ''}),
@@ -103,6 +109,7 @@ export const getAuthorHomeAction = () => {
       dispatch({
         type: 'GetAuthorHome',
         payload: res.data.data,
+        loading: false,
       });
     } catch (err: any) {
       console.log('err getAuthorHomeAction', err.response.data);
@@ -111,6 +118,7 @@ export const getAuthorHomeAction = () => {
       dispatch({
         type: 'GetAuthorHome',
         payload: [],
+        loading: false,
       });
     }
   };

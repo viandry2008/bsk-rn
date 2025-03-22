@@ -1,10 +1,12 @@
 import React, {useEffect} from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import ActivityIndicatorComp from '../../components/ActivityIndicatorComp';
 import ButtonSearch from '../../components/HomeComp/ButtonSearch';
 import HeaderHome from '../../components/HomeComp/HeaderHome';
 import InfoBookHome from '../../components/HomeComp/InfoBookHome';
 import TitleSectionHome from '../../components/HomeComp/TitleSectionHome';
+import NoDataComp from '../../components/NoDataComp';
 import ListItemAuthorCt from '../../containers/AuthorCt/ListItemAuthorCt';
 import ListItemBookCt from '../../containers/BookCt/ListItemBookCt';
 import {
@@ -25,27 +27,43 @@ type Props = {
   booksTrending: any;
   authorHome: any;
   booksFeaured: any;
+  loadingBanner: boolean;
+  loadingBooksTrending: boolean;
+  loadingHome: boolean;
+  loadingBooksFeaured: boolean;
 };
 
 const HomePage = ({
   navigation,
   banner = useSelector((state: ApplicationState) => state.bookReducer.banner),
+  loadingBanner = useSelector(
+    (state: ApplicationState) => state.bookReducer.loadingBanner,
+  ),
   booksTrending = useSelector(
     (state: ApplicationState) => state.bookReducer.booksTrending,
+  ),
+  loadingBooksTrending = useSelector(
+    (state: ApplicationState) => state.bookReducer.loadingBooksTrending,
   ),
   authorHome = useSelector(
     (state: ApplicationState) => state.authorReducer.authorHome,
   ),
+  loadingHome = useSelector(
+    (state: ApplicationState) => state.authorReducer.loadingHome,
+  ),
   booksFeaured = useSelector(
     (state: ApplicationState) => state.bookReducer.booksFeaured,
+  ),
+  loadingBooksFeaured = useSelector(
+    (state: ApplicationState) => state.bookReducer.loadingBooksFeaured,
   ),
 }: Props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      fetching();
-    });
+    // const unsubscribe = navigation.addListener('focus', () => {
+    //   fetching();
+    // });
 
     const fetching = async () => {
       let user = await getDataLoginHelper();
@@ -57,9 +75,9 @@ const HomePage = ({
 
     fetching();
 
-    return () => {
-      unsubscribe();
-    };
+    // return () => {
+    //   unsubscribe();
+    // };
   }, []);
 
   return (
@@ -74,18 +92,24 @@ const HomePage = ({
             })
           }
         />
-        {banner?.map((item: any) => {
-          return (
-            <InfoBookHome
-              image={item?.resources}
-              title={item?.metadata?.title}
-              author={item?.metadata?.author}
-              onPress={() =>
-                dispatch(getBookDetailAction(item?.id, navigation) as any)
-              }
-            />
-          );
-        })}
+        {loadingBanner == true ? (
+          <ActivityIndicatorComp />
+        ) : (
+          <>
+            {banner?.map((item: any) => {
+              return (
+                <InfoBookHome
+                  image={item?.resources}
+                  title={item?.metadata?.title}
+                  author={item?.metadata?.author}
+                  onPress={() =>
+                    dispatch(getBookDetailAction(item?.id, navigation) as any)
+                  }
+                />
+              );
+            })}
+          </>
+        )}
         <TitleSectionHome
           title="Buku Populer"
           onPress={() =>
@@ -95,44 +119,55 @@ const HomePage = ({
             })
           }
         />
-        <FlatList
-          data={booksTrending}
-          renderItem={({item, index}) => (
-            <ListItemBookCt
-              item={item}
-              index={index}
-              type="row"
-              onPress={(params: any) =>
-                dispatch(getBookDetailAction(params?.id, navigation) as any)
-              }
-            />
-          )}
-          keyExtractor={(item: any) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 8}}
-        />
+        {loadingBooksTrending == true ? (
+          <ActivityIndicatorComp />
+        ) : (
+          <FlatList
+            data={booksTrending}
+            renderItem={({item, index}) => (
+              <ListItemBookCt
+                item={item}
+                index={index}
+                type="row"
+                onPress={(params: any) =>
+                  dispatch(getBookDetailAction(params?.id, navigation) as any)
+                }
+              />
+            )}
+            keyExtractor={(item: any) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{paddingHorizontal: 8}}
+            ListEmptyComponent={() => {
+              return <NoDataComp />;
+            }}
+          />
+        )}
         <TitleSectionHome
           title="Autor"
           onPress={() => navigation.navigate('MainHome', {screen: 'Author'})}
         />
-        <FlatList
-          data={authorHome}
-          renderItem={({item, index}) => (
-            <ListItemAuthorCt
-              item={item}
-              index={index}
-              onPress={(params: any) =>
-                dispatch(getAuthorDetailAction(params?.id, navigation) as any)
-              }
-              type="row"
-            />
-          )}
-          keyExtractor={(item: any) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 8}}
-        />
+        {loadingHome == true ? (
+          <ActivityIndicatorComp />
+        ) : (
+          <FlatList
+            data={authorHome}
+            renderItem={({item, index}) => (
+              <ListItemAuthorCt
+                item={item}
+                index={index}
+                onPress={(params: any) =>
+                  dispatch(getAuthorDetailAction(params?.id, navigation) as any)
+                }
+                type="row"
+              />
+            )}
+            keyExtractor={(item: any) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{paddingHorizontal: 8}}
+          />
+        )}
         <TitleSectionHome
           title="Buku Unggulan"
           onPress={() =>
@@ -142,23 +177,27 @@ const HomePage = ({
             })
           }
         />
-        <FlatList
-          data={booksFeaured}
-          renderItem={({item, index}) => (
-            <ListItemBookCt
-              item={item}
-              index={index}
-              type="row"
-              onPress={(params: any) =>
-                dispatch(getBookDetailAction(params?.id, navigation) as any)
-              }
-            />
-          )}
-          keyExtractor={(item: any) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={{paddingHorizontal: 8}}
-        />
+        {loadingBooksFeaured == true ? (
+          <ActivityIndicatorComp />
+        ) : (
+          <FlatList
+            data={booksFeaured}
+            renderItem={({item, index}) => (
+              <ListItemBookCt
+                item={item}
+                index={index}
+                type="row"
+                onPress={(params: any) =>
+                  dispatch(getBookDetailAction(params?.id, navigation) as any)
+                }
+              />
+            )}
+            keyExtractor={(item: any) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{paddingHorizontal: 8}}
+          />
+        )}
       </ScrollView>
     </View>
   );

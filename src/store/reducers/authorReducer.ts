@@ -5,6 +5,7 @@ const initialState = {
   authorBooks: [],
   loading: false,
   authorHome: [],
+  loadingHome: false,
   allAuthors: [],
   nextLinkAll: '',
   hasScrolledAll: false,
@@ -27,6 +28,7 @@ const AuthorReducer = (state = initialState, action: AuthorAction) => {
       return {
         ...state,
         authorHome: action.payload,
+        loadingHome: action.loading,
       };
     case 'GetAllAuthors':
       return {
