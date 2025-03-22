@@ -20,6 +20,8 @@ interface GetAuthorHome {
 interface GetAllAuthors {
   type: 'GetAllAuthors';
   payload: any;
+  hasScrolled: boolean;
+  nextLink: any;
 }
 
 export type AuthorAction =
@@ -114,8 +116,19 @@ export const getAuthorHomeAction = () => {
   };
 };
 
-export const getAllAuthorsAction = (page: any, query: any) => {
+export const getAllAuthorsAction = (
+  page: any,
+  query: any,
+  currentData: any,
+  navigation: any,
+) => {
   return async (dispatch: Dispatch<AuthorAction>) => {
+    dispatch({
+      type: 'GetAllAuthors',
+      payload: currentData,
+      hasScrolled: true,
+      nextLink: page,
+    });
     try {
       const res = await axios.get(
         getAllAuthors({
@@ -129,8 +142,12 @@ export const getAllAuthorsAction = (page: any, query: any) => {
 
       dispatch({
         type: 'GetAllAuthors',
-        payload: res.data.data,
+        payload: [...currentData, ...res.data.data],
+        hasScrolled: false,
+        nextLink: parseInt(res.data.paging?.page) + 1,
       });
+
+      navigation == null ? null : navigation.navigate('AuthorSearch');
     } catch (err: any) {
       console.log('err getAllAuthorsAction', err.response.data);
       messageHelper(err.response.data.message, 'danger');
@@ -138,6 +155,8 @@ export const getAllAuthorsAction = (page: any, query: any) => {
       dispatch({
         type: 'GetAllAuthors',
         payload: [],
+        hasScrolled: false,
+        nextLink: null,
       });
     }
   };

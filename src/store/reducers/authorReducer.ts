@@ -6,6 +6,8 @@ const initialState = {
   loading: false,
   authorHome: [],
   allAuthors: [],
+  nextLinkAll: '',
+  hasScrolledAll: false,
 };
 
 const AuthorReducer = (state = initialState, action: AuthorAction) => {
@@ -30,6 +32,8 @@ const AuthorReducer = (state = initialState, action: AuthorAction) => {
       return {
         ...state,
         allAuthors: action.payload,
+        nextLinkAll: action.nextLink,
+        hasScrolledAll: action.hasScrolled,
       };
     default:
       return state;
