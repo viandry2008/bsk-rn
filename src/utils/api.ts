@@ -9,7 +9,8 @@ export const getSubCategories = ({id}: any) =>
   API_URL + `api/v2/categories/${id}`;
 
 // favorites
-export const getFavorites = API_URL + `api/v2/favorites`;
+export const getFavorites = ({page}: any) =>
+  API_URL + `api/v2/favorites?page=${page}&limit=12`;
 export const postFavorite = API_URL + `api/v2/favorites`;
 
 // authors

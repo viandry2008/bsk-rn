@@ -7,6 +7,8 @@ import {getBookDetailAction} from './bookAction';
 interface GetFavorites {
   type: 'GetFavorites';
   payload: any;
+  hasScrolled: boolean;
+  nextLink: any;
 }
 interface PostFavorite {
   type: 'PostFavorite';
@@ -15,19 +17,26 @@ interface PostFavorite {
 
 export type FavoriteAction = GetFavorites | PostFavorite;
 
-export const getFavoritesAction = (token: any) => {
+export const getFavoritesAction = (token: any, page: any, currentData: any) => {
   return async (dispatch: Dispatch<FavoriteAction>) => {
     dispatch({
       type: 'GetFavorites',
-      payload: [],
+      payload: currentData,
+      hasScrolled: true,
+      nextLink: page,
     });
     try {
-      const res = await axios.get(getFavorites, headerAxiosHelper(token));
+      const res = await axios.get(
+        getFavorites({page: page}),
+        headerAxiosHelper(token),
+      );
       console.log('res GetFavorites', res.data);
 
       dispatch({
         type: 'GetFavorites',
-        payload: res.data.data,
+        payload: [...currentData, ...res.data.data],
+        hasScrolled: false,
+        nextLink: parseInt(res.data.paging?.page) + 1,
       });
     } catch (err: any) {
       console.log('err GetFavorites', err.response.data);
@@ -36,6 +45,8 @@ export const getFavoritesAction = (token: any) => {
       dispatch({
         type: 'GetFavorites',
         payload: [],
+        hasScrolled: false,
+        nextLink: null,
       });
     }
   };

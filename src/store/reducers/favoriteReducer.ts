@@ -3,6 +3,8 @@ import {FavoriteAction} from '../actions';
 const initialState = {
   loading: false,
   favorites: [],
+  hasScrolled: false,
+  nextLink: '',
 };
 
 const FavoriteReducer = (state = initialState, action: FavoriteAction) => {
@@ -11,6 +13,8 @@ const FavoriteReducer = (state = initialState, action: FavoriteAction) => {
       return {
         ...state,
         favorites: action.payload,
+        nextLink: action.nextLink,
+        hasScrolled: action.hasScrolled,
       };
     case 'PostFavorite':
       return {
