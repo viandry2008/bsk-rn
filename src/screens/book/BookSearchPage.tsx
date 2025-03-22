@@ -39,9 +39,6 @@ const BookSearchPage = ({
     (state: ApplicationState) => state.bookReducer.nextLinkAll,
   ),
 }: Props) => {
-  console.log('nextLinkLatest', nextLinkAll);
-  console.log('hasScrolledLates', hasScrolledAll);
-  console.log('booksLatest', books.length);
   const dispatch = useDispatch();
 
   const [type, setType] = useState(route?.params?.type);

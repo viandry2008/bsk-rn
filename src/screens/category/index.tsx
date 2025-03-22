@@ -56,7 +56,7 @@ const CategoryPage = ({
             index={index}
             onPress={(params: any) =>
               dispatch(
-                getBooksByCategoryAction(params, 1, '', navigation) as any,
+                getBooksByCategoryAction(params, 1, '', navigation, []) as any,
               )
             }
           />

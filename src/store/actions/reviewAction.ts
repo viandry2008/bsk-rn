@@ -30,7 +30,7 @@ export const getReviewsAction = (token: any, bookId: any) => {
       });
     } catch (err: any) {
       console.log('err GetReviews', err.response.data);
-      messageHelper(err.response.data.message, 'danger');
+      // messageHelper(err.response.data.message, 'danger');
 
       dispatch({
         type: 'GetReviews',

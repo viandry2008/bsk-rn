@@ -13,6 +13,8 @@ const initialState = {
   hasScrolledLates: false,
   nextLinkAll: '',
   hasScrolledAll: false,
+  nextLinkByCategory: '',
+  hasScrolledByCategory: false,
 };
 
 const BookReducer = (state = initialState, action: BookAction) => {
@@ -21,8 +23,8 @@ const BookReducer = (state = initialState, action: BookAction) => {
       return {
         ...state,
         booksCategory: action.payload,
-        books: [],
-        banner: [],
+        hasScrolledByCategory: action.hasScrolled,
+        nextLinkByCategory: action.nextLink,
       };
     case 'GetBookDetail':
       return {

@@ -6,6 +6,8 @@ import {headerAxiosHelper, messageHelper} from '../../utils/helpers';
 interface GetBooksByCategory {
   readonly type: 'GetBooksByCategory';
   payload: any;
+  hasScrolled: boolean;
+  nextLink: any;
 }
 interface GetBookDetail {
   readonly type: 'GetBookDetail';
@@ -51,8 +53,15 @@ export const getBooksByCategoryAction = (
   page: any,
   query: any,
   navigation: any,
+  currentData: any,
 ) => {
   return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({
+      type: 'GetBooksByCategory',
+      payload: currentData,
+      hasScrolled: true,
+      nextLink: page,
+    });
     try {
       const res = await axios.get(
         getAllBooks({
@@ -68,7 +77,9 @@ export const getBooksByCategoryAction = (
 
       dispatch({
         type: 'GetBooksByCategory',
-        payload: res.data.data,
+        payload: [...currentData, ...res.data.data],
+        hasScrolled: false,
+        nextLink: parseInt(res.data.paging?.page) + 1,
       });
 
       navigation == null ? null : navigation.navigate('BookCategory', category);
@@ -79,6 +90,8 @@ export const getBooksByCategoryAction = (
       dispatch({
         type: 'GetBooksByCategory',
         payload: [],
+        hasScrolled: false,
+        nextLink: null,
       });
     }
   };

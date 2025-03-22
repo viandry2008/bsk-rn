@@ -1,5 +1,11 @@
-import React, {useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import React, {useCallback, useRef, useState} from 'react';
+import {
+  ActivityIndicator,
+  Animated,
+  FlatList,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import HeaderCustom from '../../components/HeaderCustom';
 import NoDataComp from '../../components/NoDataComp';
@@ -10,12 +16,15 @@ import {
   getBookDetailAction,
   getBooksByCategoryAction,
 } from '../../store';
+import DimensionStyle from '../../styles/DimensionStyle';
 import Colors from '../../styles/colors';
 
 type Props = {
   navigation: {navigate: Function; goBack: Function};
   route: any;
   books: any;
+  hasScrolledByCategory: any;
+  nextLinkByCategory: any;
 };
 
 const BookCategoryPage = ({
@@ -24,9 +33,42 @@ const BookCategoryPage = ({
   books = useSelector(
     (state: ApplicationState) => state.bookReducer.booksCategory,
   ),
+  hasScrolledByCategory = useSelector(
+    (state: ApplicationState) => state.bookReducer.hasScrolledByCategory,
+  ),
+  nextLinkByCategory = useSelector(
+    (state: ApplicationState) => state.bookReducer.nextLinkByCategory,
+  ),
 }: Props) => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState('');
+
+  // scroll
+  const loadMore = useRef(false);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [scrollY, setscrollY] = useState(new Animated.Value(0));
+
+  // handle scolled
+  const handleScroll = useCallback(
+    ({contentOffset: {y}}: any) => {
+      const offset = Math.round(y / (DimensionStyle.dimensionHeight * 1.8));
+
+      setFocusedIndex(offset);
+    },
+    [setFocusedIndex],
+  );
+
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: any) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -45,6 +87,7 @@ const BookCategoryPage = ({
               1,
               search == '' ? '' : search,
               null,
+              [],
             ) as any,
           )
         }
@@ -67,6 +110,38 @@ const BookCategoryPage = ({
         contentContainerStyle={{paddingHorizontal: 3}}
         ListEmptyComponent={() => {
           return <NoDataComp />;
+        }}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: false},
+        )}
+        onMomentumScrollBegin={() => {
+          loadMore.current = true;
+        }}
+        onMomentumScrollEnd={({nativeEvent}) => {
+          if (isCloseToBottom(nativeEvent)) {
+            if (loadMore.current) {
+              handleScroll(nativeEvent);
+
+              dispatch(
+                getBooksByCategoryAction(
+                  route?.params,
+                  nextLinkByCategory,
+                  search == '' ? '' : search,
+                  null,
+                  books,
+                ) as any,
+              );
+            }
+            loadMore.current = false;
+          }
+        }}
+        ListFooterComponent={() => {
+          return hasScrolledByCategory == true ? (
+            <View style={{alignItems: 'center', marginVertical: 16}}>
+              <ActivityIndicator size="large" color={Colors.black} />
+            </View>
+          ) : null;
         }}
       />
     </View>
