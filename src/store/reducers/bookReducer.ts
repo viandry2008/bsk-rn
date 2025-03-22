@@ -9,6 +9,10 @@ const initialState = {
   booksLatest: [],
   booksAll: [],
   bookPdf: '',
+  nextLinkLatest: '',
+  hasScrolledLates: false,
+  nextLinkAll: '',
+  hasScrolledAll: false,
 };
 
 const BookReducer = (state = initialState, action: BookAction) => {
@@ -45,11 +49,15 @@ const BookReducer = (state = initialState, action: BookAction) => {
       return {
         ...state,
         booksLatest: action.payload,
+        nextLinkLatest: action.nextLink,
+        hasScrolledLates: action.hasScrolled,
       };
     case 'GetAllBooks':
       return {
         ...state,
         booksAll: action.payload,
+        nextLinkAll: action.nextLink,
+        hasScrolledAll: action.hasScrolled,
       };
     default:
       return state;

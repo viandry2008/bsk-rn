@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {Dispatch} from 'react';
-import {getAllBooks, getBookDetail, getBooksByCategory} from '../../utils/api';
+import {getAllBooks, getBookDetail} from '../../utils/api';
 import {headerAxiosHelper, messageHelper} from '../../utils/helpers';
 
 interface GetBooksByCategory {
@@ -27,10 +27,14 @@ interface GetBooksFeatured {
 interface GetBooksLatest {
   readonly type: 'GetBooksLatest';
   payload: any;
+  hasScrolled: boolean;
+  nextLink: any;
 }
 interface GetAllBooks {
   readonly type: 'GetAllBooks';
   payload: any;
+  hasScrolled: boolean;
+  nextLink: any;
 }
 
 export type BookAction =
@@ -206,8 +210,19 @@ export const getBooksFeaturedActions = (limit: any) => {
   };
 };
 
-export const getBooksLatestAction = (category: any, page: any) => {
+export const getBooksLatestAction = (
+  category: any,
+  page: any,
+  currentData: any,
+  type: 'paging' | 'first',
+) => {
   return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({
+      type: 'GetBooksLatest',
+      payload: currentData,
+      hasScrolled: true,
+      nextLink: page,
+    });
     try {
       const res = await axios.get(
         getAllBooks({
@@ -223,7 +238,9 @@ export const getBooksLatestAction = (category: any, page: any) => {
 
       dispatch({
         type: 'GetBooksLatest',
-        payload: res.data.data,
+        payload: [...currentData, ...res.data.data],
+        hasScrolled: false,
+        nextLink: parseInt(res.data.paging?.page) + 1,
       });
     } catch (err: any) {
       console.log('err getBooksLatestAction', err.response.data);
@@ -232,13 +249,26 @@ export const getBooksLatestAction = (category: any, page: any) => {
       dispatch({
         type: 'GetBooksLatest',
         payload: [],
+        hasScrolled: false,
+        nextLink: null,
       });
     }
   };
 };
 
-export const getAllBooksAction = (type: any, page: any, query: any) => {
+export const getAllBooksAction = (
+  type: any,
+  page: any,
+  query: any,
+  currentData: any,
+) => {
   return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({
+      type: 'GetAllBooks',
+      payload: currentData,
+      hasScrolled: true,
+      nextLink: page,
+    });
     try {
       const res = await axios.get(
         getAllBooks({
@@ -254,7 +284,9 @@ export const getAllBooksAction = (type: any, page: any, query: any) => {
 
       dispatch({
         type: 'GetAllBooks',
-        payload: res.data.data,
+        payload: [...currentData, ...res.data.data],
+        hasScrolled: false,
+        nextLink: parseInt(res.data.paging?.page) + 1,
       });
     } catch (err: any) {
       console.log('err getAllBooksAction', err.response.data);
@@ -263,6 +295,8 @@ export const getAllBooksAction = (type: any, page: any, query: any) => {
       dispatch({
         type: 'GetAllBooks',
         payload: [],
+        hasScrolled: false,
+        nextLink: null,
       });
     }
   };

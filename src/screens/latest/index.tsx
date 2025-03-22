@@ -1,6 +1,8 @@
 import Icon from '@react-native-vector-icons/fontawesome6';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
+  ActivityIndicator,
+  Animated,
   FlatList,
   ScrollView,
   StyleSheet,
@@ -20,17 +22,26 @@ import {
   getCategoriesAction,
 } from '../../store';
 import Colors from '../../styles/colors';
+import DimensionStyle from '../../styles/DimensionStyle';
 
 type Props = {
   navigation: {navigate: Function; addListener: Function};
   booksLatest: any;
   categories: any;
+  nextLinkLatest: any;
+  hasScrolledLates: any;
 };
 
 const LatestPage = ({
   navigation,
   booksLatest = useSelector(
     (state: ApplicationState) => state.bookReducer.booksLatest,
+  ),
+  nextLinkLatest = useSelector(
+    (state: ApplicationState) => state.bookReducer.nextLinkLatest,
+  ),
+  hasScrolledLates = useSelector(
+    (state: ApplicationState) => state.bookReducer.hasScrolledLates,
   ),
   categories = useSelector(
     (state: ApplicationState) => state.categoryReducer.categories,
@@ -42,6 +53,33 @@ const LatestPage = ({
 
   const [category, setCategory] = useState<any>({});
 
+  // scroll
+  const loadMore = useRef(false);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [scrollY, setscrollY] = useState(new Animated.Value(0));
+
+  // handle scolled
+  const handleScroll = useCallback(
+    ({contentOffset: {y}}: any) => {
+      const offset = Math.round(y / (DimensionStyle.dimensionHeight * 1.8));
+
+      setFocusedIndex(offset);
+    },
+    [setFocusedIndex],
+  );
+
+  const isCloseToBottom = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: any) => {
+    const paddingToBottom = 20;
+    return (
+      layoutMeasurement.height + contentOffset.y >=
+      contentSize.height - paddingToBottom
+    );
+  };
+
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       fetching();
@@ -49,7 +87,7 @@ const LatestPage = ({
 
     const fetching = async () => {
       dispatch(getCategoriesAction() as any);
-      dispatch(getBooksLatestAction('', 1) as any);
+      dispatch(getBooksLatestAction('', 1, [], 'first') as any);
     };
 
     fetching();
@@ -89,6 +127,37 @@ const LatestPage = ({
         ListEmptyComponent={() => {
           return <NoDataComp />;
         }}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
+          {useNativeDriver: false},
+        )}
+        onMomentumScrollBegin={() => {
+          loadMore.current = true;
+        }}
+        onMomentumScrollEnd={({nativeEvent}) => {
+          if (isCloseToBottom(nativeEvent)) {
+            if (loadMore.current) {
+              handleScroll(nativeEvent);
+
+              dispatch(
+                getBooksLatestAction(
+                  category?.slug == undefined ? '' : category?.slug,
+                  nextLinkLatest,
+                  booksLatest,
+                  'paging',
+                ) as any,
+              );
+            }
+            loadMore.current = false;
+          }
+        }}
+        ListFooterComponent={() => {
+          return hasScrolledLates == true ? (
+            <View style={{alignItems: 'center', marginVertical: 16}}>
+              <ActivityIndicator size="large" color={Colors.black} />
+            </View>
+          ) : null;
+        }}
       />
 
       <Modalize ref={modalizeRef} modalHeight={400}>
@@ -99,7 +168,7 @@ const LatestPage = ({
             onPress={() => {
               modalizeRef.current?.close();
               setCategory({});
-              dispatch(getBooksLatestAction('', 1) as any);
+              dispatch(getBooksLatestAction('', 1, [], 'first') as any);
             }}
             style={styles.listCat}>
             <View style={{flex: 1}}>
@@ -126,7 +195,9 @@ const LatestPage = ({
                 onPress={() => {
                   modalizeRef.current?.close();
                   setCategory(item);
-                  dispatch(getBooksLatestAction(item?.slug, 1) as any);
+                  dispatch(
+                    getBooksLatestAction(item?.slug, 1, [], 'first') as any,
+                  );
                 }}
                 style={styles.listCat}>
                 <View style={{flex: 1}}>
