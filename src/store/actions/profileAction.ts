@@ -13,6 +13,11 @@ export type ProfileAction = GetMe;
 
 export const getMeAction = (token: any) => {
   return async (dispatch: Dispatch<ProfileAction>) => {
+    dispatch({
+      type: 'GetMe',
+      payload: '',
+      loading: true,
+    });
     try {
       const res = await axios.get(getMe, headerAxiosHelper(token));
       console.log('res GetMe', res.data);

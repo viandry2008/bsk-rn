@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import BookBannerComp from '../../components/BookComp/BookBannerComp';
 import BookButtonActionComp from '../../components/BookComp/BookButtonActionComp';
@@ -22,6 +22,11 @@ import {
 import DimensionStyle from '../../styles/DimensionStyle';
 import Colors from '../../styles/colors';
 import {getDataLoginHelper, messageHelper} from '../../utils/helpers';
+import {
+  getReadBooksHelper,
+  isBookReadHelper,
+  saveReadBookHelper,
+} from '../../utils/bookStorageHelper';
 
 type Props = {
   navigation: {goBack: Function; push: Function; navigate: Function};
@@ -59,6 +64,8 @@ const BookDetailPage = ({
   const [textReview, setTextReview] = useState('');
   const [starReview, setStarReview] = useState(0);
 
+  const [isRead, setIsRead] = useState(false);
+
   useEffect(() => {
     const fetching = async () => {
       let dataLogin = await getDataLoginHelper();
@@ -67,10 +74,24 @@ const BookDetailPage = ({
       if (dataLogin?.token != null || user == 'Unauthenticated') {
         dispacth(getReviewsAction(dataLogin?.token, book?.id) as any);
       }
+
+      const alreadyRead = await isBookReadHelper(book?.id);
+      setIsRead(alreadyRead);
     };
 
     fetching();
   }, []);
+
+  // save the book
+  const handleMarkAsRead = async () => {
+    if (user == 'Unauthenticated') {
+      navigation.navigate('MainHome', {screen: 'Profile'});
+    } else {
+      await saveReadBookHelper(book);
+      setIsRead(true);
+      navigation.navigate('BookPdf', {pdfLink: bookPdf});
+    }
+  };
 
   const handelAddFavorite = () => {
     let body = {
@@ -113,7 +134,8 @@ const BookDetailPage = ({
         />
         <BookButtonActionComp
           onFavorite={() => handelAddFavorite()}
-          onRead={() => navigation.navigate('BookPdf', {pdfLink: bookPdf})}
+          // onRead={() => navigation.navigate('BookPdf', {pdfLink: bookPdf})}
+          onRead={handleMarkAsRead}
           onReport={() => {}}
         />
         <BookInfoComp desc={book?.metadata?.description} />

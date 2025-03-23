@@ -177,6 +177,7 @@ export const getBookBannerAction = () => {
     }
   };
 };
+
 export const getBooksTrendingAction = (limit: any) => {
   return async (dispatch: Dispatch<BookAction>) => {
     dispatch({
