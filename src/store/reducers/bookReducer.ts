@@ -18,6 +18,8 @@ const initialState = {
   hasScrolledAll: false,
   nextLinkByCategory: '',
   hasScrolledByCategory: false,
+  booksCategoriesHome: [],
+  booksCategoriesHomeLoad: false,
 };
 
 const BookReducer = (state = initialState, action: BookAction) => {
@@ -66,6 +68,12 @@ const BookReducer = (state = initialState, action: BookAction) => {
         booksAll: action.payload,
         nextLinkAll: action.nextLink,
         hasScrolledAll: action.hasScrolled,
+      };
+    case 'GetBooksByCategoryHome':
+      return {
+        ...state,
+        booksCategoriesHomeLoad: action.loading,
+        booksCategoriesHome: action.payload,
       };
     default:
       return state;

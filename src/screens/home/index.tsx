@@ -15,6 +15,8 @@ import {
   getAuthorHomeAction,
   getBookBannerAction,
   getBookDetailAction,
+  getBooksByCategoryAction,
+  getBooksByCategoryHomeAction,
   getBooksFeaturedActions,
   getBooksTrendingAction,
 } from '../../store';
@@ -31,6 +33,8 @@ type Props = {
   loadingBooksTrending: boolean;
   loadingHome: boolean;
   loadingBooksFeaured: boolean;
+  booksCategoriesHome: any;
+  booksCategoriesHomeLoad: any;
 };
 
 const HomePage = ({
@@ -57,6 +61,12 @@ const HomePage = ({
   loadingBooksFeaured = useSelector(
     (state: ApplicationState) => state.bookReducer.loadingBooksFeaured,
   ),
+  booksCategoriesHome = useSelector(
+    (state: ApplicationState) => state.bookReducer.booksCategoriesHome,
+  ),
+  booksCategoriesHomeLoad = useSelector(
+    (state: ApplicationState) => state.bookReducer.booksCategoriesHomeLoad,
+  ),
 }: Props) => {
   const dispatch = useDispatch();
 
@@ -71,6 +81,7 @@ const HomePage = ({
       dispatch(getBooksTrendingAction(5) as any);
       dispatch(getAuthorHomeAction() as any);
       dispatch(getBooksFeaturedActions(5) as any);
+      dispatch(getBooksByCategoryHomeAction() as any);
     };
 
     fetching();
@@ -197,6 +208,55 @@ const HomePage = ({
             showsHorizontalScrollIndicator={false}
             contentContainerStyle={{paddingHorizontal: 8}}
           />
+        )}
+
+        {booksCategoriesHomeLoad == true ? (
+          <ActivityIndicatorComp />
+        ) : (
+          <View style={{marginBottom: 24}}>
+            <FlatList
+              data={booksCategoriesHome}
+              renderItem={({item, index}) => (
+                <>
+                  <TitleSectionHome
+                    title={item?.text}
+                    onPress={() =>
+                      dispatch(
+                        getBooksByCategoryAction(
+                          item,
+                          1,
+                          '',
+                          navigation,
+                          [],
+                        ) as any,
+                      )
+                    }
+                  />
+                  <FlatList
+                    data={item?.books}
+                    renderItem={({item, index}) => (
+                      <ListItemBookCt
+                        item={item}
+                        index={index}
+                        type="row"
+                        onPress={(params: any) =>
+                          dispatch(
+                            getBookDetailAction(params?.id, navigation) as any,
+                          )
+                        }
+                      />
+                    )}
+                    keyExtractor={(item: any) => item.id}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{paddingHorizontal: 8}}
+                  />
+                </>
+              )}
+              keyExtractor={(item: any) => item.id}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
         )}
       </ScrollView>
     </View>

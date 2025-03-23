@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {Dispatch} from 'react';
-import {getAllBooks, getBookDetail} from '../../utils/api';
+import {getAllBooks, getBookDetail, getCategories} from '../../utils/api';
 import {headerAxiosHelper, messageHelper} from '../../utils/helpers';
 
 interface GetBooksByCategory {
@@ -41,6 +41,11 @@ interface GetAllBooks {
   hasScrolled: boolean;
   nextLink: any;
 }
+interface GetBooksByCategoryHome {
+  readonly type: 'GetBooksByCategoryHome';
+  payload: any;
+  loading: boolean;
+}
 
 export type BookAction =
   | GetBooksByCategory
@@ -49,7 +54,8 @@ export type BookAction =
   | GetBooksTrending
   | GetBooksFeatured
   | GetBooksLatest
-  | GetAllBooks;
+  | GetAllBooks
+  | GetBooksByCategoryHome;
 
 export const getBooksByCategoryAction = (
   category: any,
@@ -334,6 +340,73 @@ export const getAllBooksAction = (
         payload: [],
         hasScrolled: false,
         nextLink: null,
+      });
+    }
+  };
+};
+
+export const getBooksByCategoryHomeAction = () => {
+  return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({
+      type: 'GetBooksByCategoryHome',
+      payload: [],
+      loading: true,
+    });
+    try {
+      const resCategories = await axios.get(getCategories, headerAxiosHelper());
+      const categories = resCategories.data;
+
+      console.log('Categories Response:', categories);
+
+      const booksByCategory = await Promise.all(
+        categories.map(async (category: any) => {
+          try {
+            const resBooks = await axios.get(
+              getAllBooks({
+                category: category?.slug,
+                type: '',
+                limit: 10,
+                page: 1,
+                query: '',
+              }),
+              headerAxiosHelper(),
+            );
+            return {
+              category_id: category.id,
+              slug: category.slug,
+              text: category.text,
+              books: resBooks.data.data,
+            };
+          } catch (error) {
+            console.error(
+              `Error fetching books for category: ${category.slug}`,
+              error,
+            );
+            return {
+              category_id: category.id,
+              slug: category.slug,
+              text: category.text,
+              books: [],
+            };
+          }
+        }),
+      );
+
+      console.log('Books by Category Response:', booksByCategory);
+
+      dispatch({
+        type: 'GetBooksByCategoryHome',
+        payload: booksByCategory,
+        loading: false,
+      });
+    } catch (err: any) {
+      console.log('err GetBooksByCategoryHome', err.response.data);
+      messageHelper(err.response.data.message, 'danger');
+
+      dispatch({
+        type: 'GetBooksByCategoryHome',
+        payload: [],
+        loading: false,
       });
     }
   };
